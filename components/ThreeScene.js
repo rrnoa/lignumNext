@@ -167,7 +167,7 @@ const ThreeScene = ({ blockSize }) => {
   const paintBlocks = (scene, allColors, material) => {
     const loader = new OBJLoader();
     //removeObjWithChildren(scene); //remover bloques
-    loader.load("/CUBO.obj", function (object) {
+    loader.load("CUBO.obj", function (object) {
       console.log("cubo cargado");
       paintFrame(scene, object.children[0].geometry, allColors, material); //despues de cargado el cubo entonces dibuja
     });
@@ -202,25 +202,25 @@ const ThreeScene = ({ blockSize }) => {
     }*/
 
     const diffuseMaps = [
-      "/textures/Textura1_Albedo.jpg",
-      "/textures/Textura2_Albedo.jpg",
-      "/textures/Textura3_Albedo.jpg",
-      "/textures/Textura4_Albedo.jpg",
+      "textures/Textura1_Albedo.jpg",
+      "textures/Textura2_Albedo.jpg",
+      "textures/Textura3_Albedo.jpg",
+      "textures/Textura4_Albedo.jpg",
       // Agrega más texturas aquí
     ];
 
     const roughnessMaps = [
-      "/textures/Textura1_Roughness.jpg",
-      "/textures/Textura2_Roughness.jpg",
-      "/textures/Textura3_Roughness.jpg",
-      "/textures/Textura4_Roughness.jpg",
+      "textures/Textura1_Roughness.jpg",
+      "textures/Textura2_Roughness.jpg",
+      "textures/Textura3_Roughness.jpg",
+      "textures/Textura4_Roughness.jpg",
     ];
 
     const normalMaps = [
-      "/textures/Textura1_Normal.jpg",
-      "/textures/Textura2_Normal.jpg",
-      "/textures/Textura3_Normal.jpg",
-      "/textures/Textura4_Normal.jpg",
+      "textures/Textura1_Normal.jpg",
+      "textures/Textura2_Normal.jpg",
+      "textures/Textura3_Normal.jpg",
+      "textures/Textura4_Normal.jpg",
     ];
 
     const diffuseTextures = [];

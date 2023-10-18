@@ -49,7 +49,7 @@ function Header() {
     <header className="header">
       <Link href="/">
         <Image
-          src="/lignum-logo-black.svg"
+          src="lignum-logo-black.svg"
           width={120}
           height={120}
           alt="Logo Lignum"
@@ -57,7 +57,7 @@ function Header() {
       </Link>
       <Link className="button button--cart" href="/">
         <Image
-          src="/icons/shopping-cart-gray.svg"
+          src="icons/shopping-cart-gray.svg"
           width={24}
           height={24}
           alt="Shopping Cart"
