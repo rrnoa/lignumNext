@@ -7,7 +7,7 @@ export default function Home() {
       <header className="header">
         <Link href="/">
           <Image
-            src="/lignum-logo.svg"
+            src="lignum-logo.svg"
             width={120}
             height={120}
             alt="Logo Lignum"
@@ -15,7 +15,7 @@ export default function Home() {
         </Link>
         <Link className="button button--cart" href="/">
           <Image
-            src="/icons/shopping-cart.svg"
+            src="icons/shopping-cart.svg"
             width={24}
             height={24}
             alt="Shopping Cart"
@@ -107,7 +107,7 @@ export default function Home() {
                   <div className="col-12 col-offset-2-md col-8-md">
                     <p className="mt mb-d2 bold text-left">Original image</p>
                     <Image
-                      src="/home/example-1.png"
+                      src="home/example-1.png"
                       width={450}
                       height={450}
                       className="img--blocks"
@@ -123,7 +123,7 @@ export default function Home() {
                 <div className="row mt-x2 mt-x3 mb-x2 mb-x4-md">
                   <div className="col-12 col-offset-2-md col-8-md">
                     <Image
-                      src="/home/example-2.png"
+                      src="home/example-2.png"
                       width={450}
                       height={450}
                       className="img--blocks"
@@ -134,7 +134,7 @@ export default function Home() {
                 <h5 className="mb">Instant Cost Calculation</h5>
                 <div className="flex middle mb-x2">
                   <Image
-                    src="/home/icon-dollar.svg"
+                    src="home/icon-dollar.svg"
                     className="mr-d1-2 mr-x1-2-md icon--home"
                     width={64}
                     height={64}
@@ -148,7 +148,7 @@ export default function Home() {
                 <h5 className="mb">Efficiency Amplified</h5>
                 <div className="flex middle mb-x6">
                   <Image
-                    src="/home/icon-time.svg"
+                    src="home/icon-time.svg"
                     className="mr-d1-2 mr-x1-2-md icon--home"
                     width={64}
                     height={64}
