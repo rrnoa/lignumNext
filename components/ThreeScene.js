@@ -117,7 +117,7 @@ const ThreeScene = ({ blockSize }) => {
         MaterialControl(gui, material);
         RendererControl(gui, renderer);
 
-        fetch("/jueves_config.json")
+        fetch("jueves_config.json")
           .then((response) => {
             return response.json();
           })
