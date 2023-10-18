@@ -1,0 +1,254 @@
+$spacing-map: (
+  "0": 0,
+  "d6": d6($space),
+  "d5": d5($space),
+  "d4": d4($space),
+  "d3": d3($space),
+  "d2": d2($space),
+  "d1-2": d1-2($space),
+  "x1-2": x1-2($space),
+  "x2": x2($space),
+  "x3": x3($space),
+  "x4": x4($space),
+  "x5": x5($space),
+  "x6": x6($space),
+) !default;
+
+@each $prop, $abbrev in (margin: m, padding: p) {
+  @each $name, $size in $spacing-map {
+    .#{$abbrev}-#{$name} {
+      #{$prop}: $size !important;
+    }
+    .#{$abbrev}t-#{$name} {
+      #{$prop}-top: $size !important;
+    }
+    .#{$abbrev}l-#{$name} {
+      #{$prop}-left: $size !important;
+    }
+    .#{$abbrev}r-#{$name} {
+      #{$prop}-right: $size !important;
+    }
+    .#{$abbrev}b-#{$name} {
+      #{$prop}-bottom: $size !important;
+    }
+
+    .#{$abbrev}y-#{$name} {
+      #{$prop}-top: $size !important;
+      #{$prop}-bottom: $size !important;
+    }
+    .#{$abbrev}x-#{$name} {
+      #{$prop}-left: $size !important;
+      #{$prop}-right: $size !important;
+    }
+
+    .#{$abbrev} {
+      #{$prop}: $space !important;
+    }
+    .#{$abbrev}t {
+      #{$prop}-top: $space !important;
+    }
+    .#{$abbrev}l {
+      #{$prop}-left: $space !important;
+    }
+    .#{$abbrev}r {
+      #{$prop}-right: $space !important;
+    }
+    .#{$abbrev}b {
+      #{$prop}-bottom: $space !important;
+    }
+
+    .#{$abbrev}y {
+      #{$prop}-top: $space !important;
+      #{$prop}-bottom: $space !important;
+    }
+
+    .#{$abbrev}x {
+      #{$prop}-left: $space !important;
+      #{$prop}-right: $space !important;
+    }
+  }
+}
+
+@each $breakpoint, $size in $breakpoints {
+  @each $prop, $abbrev in (margin: m, padding: p) {
+    @include media($breakpoint) {
+      .#{$abbrev}-#{$breakpoint} {
+        #{$prop}: $space !important;
+      }
+      .#{$abbrev}t-#{$breakpoint} {
+        #{$prop}-top: $space !important;
+      }
+      .#{$abbrev}l-#{$breakpoint} {
+        #{$prop}-left: $space !important;
+      }
+      .#{$abbrev}r-#{$breakpoint} {
+        #{$prop}-right: $space !important;
+      }
+      .#{$abbrev}b-#{$breakpoint} {
+        #{$prop}-bottom: $space !important;
+      }
+
+      .#{$abbrev}y-#{$breakpoint} {
+        #{$prop}-top: $space !important;
+        #{$prop}-bottom: $space !important;
+      }
+
+      .#{$abbrev}x-#{$breakpoint} {
+        #{$prop}-left: $space !important;
+        #{$prop}-right: $space !important;
+      }
+    }
+  }
+}
+
+@each $breakpoint, $size in $breakpoints {
+  @each $prop, $abbrev in (margin: m, padding: p) {
+    @each $name, $size in $spacing-map {
+      @include media($breakpoint) {
+        .#{$abbrev}-#{$name}-#{$breakpoint} {
+          #{$prop}: $size !important;
+        }
+        .#{$abbrev}t-#{$name}-#{$breakpoint} {
+          #{$prop}-top: $size !important;
+        }
+        .#{$abbrev}l-#{$name}-#{$breakpoint} {
+          #{$prop}-left: $size !important;
+        }
+        .#{$abbrev}r-#{$name}-#{$breakpoint} {
+          #{$prop}-right: $size !important;
+        }
+        .#{$abbrev}b-#{$name}-#{$breakpoint} {
+          #{$prop}-bottom: $size !important;
+        }
+        .#{$abbrev}y-#{$name}-#{$breakpoint} {
+          #{$prop}-top: $size !important;
+          #{$prop}-bottom: $size !important;
+        }
+        .#{$abbrev}x-#{$name}-#{$breakpoint} {
+          #{$prop}-left: $size !important;
+          #{$prop}-right: $size !important;
+        }
+      }
+    }
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+.block {
+  display: block !important;
+}
+
+.inline-block {
+  display: inline-block !important;
+}
+
+.inline {
+  display: inline !important;
+}
+
+.invisible {
+  visibility: hidden !important;
+}
+
+.visible {
+  visibility: visible !important;
+}
+
+@each $breakpoint, $size in $breakpoints {
+  @include media($breakpoint) {
+    .hidden-#{$breakpoint} {
+      display: none !important;
+    }
+    .block-#{$breakpoint} {
+      display: block !important;
+    }
+    .inline-block-#{$breakpoint} {
+      display: inline-block !important;
+    }
+    .inline-#{$breakpoint} {
+      display: inline !important;
+    }
+    .invisible-#{$breakpoint} {
+      visibility: hidden !important;
+    }
+    .visible-#{$breakpoint} {
+      visibility: visible !important;
+    }
+  }
+}
+
+.margin-auto {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+@media (max-width: $md) {
+  .text-center--xs {
+    text-align: center !important;
+  }
+}
+
+.bold {
+  font-weight: $bold !important;
+}
+
+.semibold {
+  font-weight: $semibold !important;
+}
+
+.medium {
+  font-weight: $medium !important;
+}
+
+.regular {
+  font-weight: $regular !important;
+}
+
+.light {
+  font-weight: $light !important;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.text-brand {
+  color: v(brand);
+}
+
+.text-gray1 {
+  color: v(gray1);
+}
+
+.text-gray2 {
+  color: v(gray2);
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.wrapper-md {
+  max-width: $md;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0 d1-2($space);
+}
+
+.wrapper-lg {
+  max-width: $lg;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0 d1-2($space);
+}

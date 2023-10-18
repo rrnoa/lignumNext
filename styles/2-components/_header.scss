@@ -1,0 +1,28 @@
+.header {
+  @include flex;
+  @include middle;
+  @include between;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0 d1-2($space);
+  height: x4($space);
+  z-index: 10;
+
+  &--white .button--cart {
+    color: v(gray1);
+  }
+
+  .button--cart {
+    display: none;
+  }
+}
+
+@include media(md) {
+  .header {
+    padding: 0 x2($space);
+    .button--cart {
+      @include inline-flex;
+    }
+  }
+}

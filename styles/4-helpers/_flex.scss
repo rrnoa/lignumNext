@@ -1,0 +1,127 @@
+.flex {
+  @include flex(!important);
+}
+
+.inline-flex {
+  @include inline-flex(!important);
+}
+
+.start {
+  @include start(!important);
+}
+
+.center {
+  @include center(!important);
+}
+
+.end {
+  @include end(!important);
+}
+
+.top {
+  @include top(!important);
+}
+
+.baseline {
+  @include baseline(!important);
+}
+
+.middle {
+  @include middle(!important);
+}
+
+.bottom {
+  @include bottom(!important);
+}
+
+.between {
+  @include between(!important);
+}
+
+.around {
+  @include around(!important);
+}
+
+.column {
+  @include column(!important);
+}
+
+.flex-row {
+  @include flex-row(!important);
+}
+
+.bullseye {
+  @include bullseye(!important);
+}
+
+.first {
+  @include first(!important);
+}
+
+.last {
+  @include last(!important);
+}
+
+@each $breakpoint, $size in $breakpoints {
+  @include media($breakpoint) {
+    .flex-#{$breakpoint} {
+      @include flex(!important);
+    }
+
+    .inline-flex-#{$breakpoint} {
+      @include inline-flex(!important);
+    }
+
+    .start-#{$breakpoint} {
+      @include start(!important);
+    }
+
+    .center-#{$breakpoint} {
+      @include center(!important);
+    }
+
+    .end-#{$breakpoint} {
+      @include end(!important);
+    }
+
+    .top-#{$breakpoint} {
+      @include top(!important);
+    }
+
+    .middle-#{$breakpoint} {
+      @include middle(!important);
+    }
+
+    .bottom-#{$breakpoint} {
+      @include bottom(!important);
+    }
+
+    .between-#{$breakpoint} {
+      @include between(!important);
+    }
+
+    .around-#{$breakpoint} {
+      @include around(!important);
+    }
+
+    .column-#{$breakpoint} {
+      @include column(!important);
+    }
+
+    .flex-row-#{$breakpoint} {
+      @include flex-row(!important);
+    }
+
+    .bullseye-#{$breakpoint} {
+      @include bullseye(!important);
+    }
+
+    .first-#{$breakpoint} {
+      @include first(!important);
+    }
+
+    .last-#{$breakpoint} {
+      @include last(!important);
+    }
+  }
+}

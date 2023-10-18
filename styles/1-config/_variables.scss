@@ -1,0 +1,181 @@
+// Brand colors
+$color-map: (
+  "brand": "rgba(245, 114, 0, 1)",
+  "brand-light": "rgba(245, 144, 0, 1)",
+  "black": "rgba(37, 37, 37, 1)",
+  "gray1": "rgba(116, 116, 116, 1)",
+  "gray2": "rgba(237, 237, 237, 1)",
+  "gray3": "rgba(240, 240, 240, 1)",
+  "white": "rgba(250, 250, 250, 1)",
+) !default;
+
+// Main variables
+$config-map: (
+  "background-color": c(gray5),
+  "heading-font-color": c(gray1),
+  "font-color": c(gray1),
+  "font-size": 1rem,
+  "border-color": c(gray3),
+  "border-radius": 4px,
+  "link-color": c(brand),
+  "link-color-hover": c(brand-dark),
+  "wrapper-width": 1200px,
+) !default;
+
+// Return CSS4 variable
+@function v($var, $fallback: null) {
+  @if $fallback {
+    @return var(--#{$var}, #{$fallback});
+  } @else {
+    @return var(--#{$var});
+  }
+}
+
+//---------------------------------- FONTS -----------------------------------//
+
+$line-height: 1.5;
+$line-height-heading: 1.25;
+$space: $line-height * 1rem;
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+$font-family: "Open Sans", sans-serif;
+$font-family-heading: $font-family;
+$font-family-body: $font-family;
+
+$base-size: 16;
+$root-sizes: (
+  "sm": 16,
+  "md": 16,
+  "lg": 16,
+  "xl": 16,
+) !default;
+
+// Factor font scale
+$scale-xs: 1.16;
+$scale-md: 1.28;
+
+$bold: 700;
+$semibold: 600;
+$medium: 500;
+$regular: 400;
+$light: 300;
+
+$scale-level: (
+  "h1": 5,
+  "h2": 4,
+  "h3": 3,
+  "h4": 2,
+  "h5": 1,
+  "p": 0,
+  "s1": -1,
+  "s2": -2,
+  "s3": -3,
+) !default;
+
+@function pow($x, $y) {
+  $ret: 1;
+  @if $y > 0 {
+    @for $i from 1 through $y {
+      $ret: $ret * $x;
+    }
+  } @else if $y < 0 {
+    @for $i from $y to 0 {
+      $ret: math.div($ret, $x);
+    }
+  }
+  @return $ret;
+}
+
+@mixin rootsize {
+  font-size: #{math.div($base-size, 16) * 100%};
+  @each $breakpoint, $size in $root-sizes {
+    @include media($breakpoint) {
+      font-size: #{math.div($size, 16) * 100%};
+    }
+  }
+}
+
+@mixin fontsize($fontsize, $value: "") {
+  @if map-has-key($scale-level, $fontsize) {
+    $level: map-get($scale-level, $fontsize);
+    $module: pow($scale-xs, $level);
+    font-size: #{$module}rem unquote($value);
+    @media (min-width: $md) {
+      $module: pow($scale-md, $level);
+      font-size: #{$module}rem unquote($value);
+    }
+  }
+}
+
+//------------------------------- SPACING ---------------------------------//
+@function d6($value) {
+  @return math.div($value, 6);
+}
+@function d5($value) {
+  @return math.div($value, 5);
+}
+@function d4($value) {
+  @return math.div($value, 4);
+}
+@function d3($value) {
+  @return math.div($value, 3);
+}
+@function d2($value) {
+  @return math.div($value, 2);
+}
+@function d1-2($value) {
+  @return math.div($value, 1.5);
+}
+@function x1-2($value) {
+  @return $value * 1.5;
+}
+@function x2($value) {
+  @return $value * 2;
+}
+@function x3($value) {
+  @return $value * 3;
+}
+@function x4($value) {
+  @return $value * 4;
+}
+@function x5($value) {
+  @return $value * 5;
+}
+@function x6($value) {
+  @return $value * 6;
+}
+
+//------------------------------- RESPONSIVE ---------------------------------//
+$sm: 600px;
+$md: 1024px;
+$lg: 1440px;
+$xl: 2561px;
+
+$breakpoints: (
+  "sm": "screen and (min-width: #{$sm})",
+  "md": "screen and (min-width: #{$md})",
+  "lg": "screen and (min-width: #{$lg})",
+  "xl": "screen and (min-width: #{$xl})",
+) !default;
+
+@mixin media($media-query) {
+  @if map-has-key($breakpoints, $media-query) {
+    @media #{map-get($breakpoints, $media-query)} {
+      @content;
+    }
+  } @else {
+    @warn 'Breakpoint does not exist.';
+  }
+}
+
+// Return a CSS4 configuration variable
+:root {
+  @each $name, $config in $config-map {
+    --#{$name}: #{$config};
+  }
+
+  // Return a CSS4 color variable
+  @each $name, $color in $color-map {
+    --#{$name}: #{$color};
+  }
+}

@@ -1,0 +1,232 @@
+$shade-10: v(white) !default;
+$shade-1: v(brand) !default;
+$shade-0: v(white) !default;
+$teal: v(white) !default;
+$brand-color: v(brand);
+$height: 12px !default;
+
+.range--brand {
+  &[type="range"] {
+    /* removing default appearance */
+    -webkit-appearance: none;
+    appearance: none;
+    /* creating a custom design */
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    /*  slider progress trick  */
+    overflow: hidden;
+    border-radius: d1-2($space);
+  }
+
+  /* Track: webkit browsers */
+  &[type="range"]::-webkit-slider-runnable-track {
+    height: $height;
+    background: v(black);
+    border-radius: d1-2($space);
+  }
+
+  /* Track: Mozilla Firefox */
+  &[type="range"]::-moz-range-track {
+    height: $height;
+    background: #ccc;
+    border-radius: d1-2($space);
+  }
+
+  /* Thumb: webkit */
+  &[type="range"]::-webkit-slider-thumb {
+    /* removing default appearance */
+    -webkit-appearance: none;
+    appearance: none;
+    /* creating a custom design */
+    height: $height;
+    width: $height;
+    background-color: v(white);
+    border-radius: 50%;
+    border: 1px solid v(black);
+    /*  slider progress trick  */
+    box-shadow: -407px 0 0 400px $brand-color;
+  }
+
+  /* Thumb: Firefox */
+  &[type="range"]::-moz-range-thumb {
+    height: $height;
+    width: $height;
+    background-color: v(white);
+    border-radius: 50%;
+    border: 1px solid v(black);
+    /*  slider progress trick  */
+    box-shadow: -407px 0 0 400px $brand-color;
+  }
+}
+
+.range--hue {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  border-radius: 0.5em;
+  background-color: rgba(0, 0, 0, 0.1);
+  height: $height;
+  width: 100%;
+  display: block;
+  outline: none;
+  transition: color 0.05s linear;
+  background: linear-gradient(
+    to right,
+    rgb(255, 0, 0),
+    rgb(255, 255, 0),
+    rgb(0, 255, 0),
+    rgb(0, 255, 255),
+    rgb(0, 0, 255),
+    rgb(255, 0, 255),
+    rgb(255, 0, 0)
+  );
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-moz-range-track {
+    appearance: none;
+    opacity: 0;
+    outline: none !important;
+  }
+
+  &::-ms-track {
+    outline: none !important;
+    appearance: none;
+    opacity: 0;
+  }
+
+  &::-webkit-slider-thumb {
+    width: d1-2($space);
+    height: d1-2($space);
+    border-radius: 50%;
+    border-radius: 2em;
+    appearance: none;
+    background: white;
+    border: 2px solid v(black);
+    transition: border 0.1s ease-in-out, box-shadow 0.2s ease-in-out,
+      transform 0.1s ease-in-out;
+    box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.15);
+  }
+
+  &::-moz-range-thumb {
+    width: d1-2($space);
+    height: d1-2($space);
+    border-radius: 50%;
+    appearance: none;
+    background: white;
+    border: 2px solid v(black);
+    transition: box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0);
+  }
+}
+
+.range--saturation {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  border-radius: 0.5em;
+  background-color: rgba(0, 0, 0, 0.1);
+  height: $height;
+  width: 100%;
+  display: block;
+  outline: none;
+  transition: color 0.05s linear;
+  background: linear-gradient(to right, grey, rgb(71, 130, 216));
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-moz-range-track {
+    appearance: none;
+    opacity: 0;
+    outline: none !important;
+  }
+
+  &::-ms-track {
+    outline: none !important;
+    appearance: none;
+    opacity: 0;
+  }
+
+  &::-webkit-slider-thumb {
+    width: d1-2($space);
+    height: d1-2($space);
+    border-radius: 50%;
+    border-radius: 2em;
+    appearance: none;
+    background: white;
+    border: 2px solid v(black);
+    transition: border 0.1s ease-in-out, box-shadow 0.2s ease-in-out,
+      transform 0.1s ease-in-out;
+    box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.15);
+  }
+
+  &::-moz-range-thumb {
+    width: d1-2($space);
+    height: d1-2($space);
+    border-radius: 50%;
+    appearance: none;
+    background: white;
+    border: 2px solid v(black);
+    transition: box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0);
+  }
+}
+
+.range--lightness {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  border-radius: 0.5em;
+  background-color: rgba(0, 0, 0, 0.1);
+  height: $height;
+  width: 100%;
+  display: block;
+  outline: none;
+  transition: color 0.05s linear;
+  background: linear-gradient(to right, rgb(0, 0, 0), rgb(77, 148, 255));
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-moz-range-track {
+    appearance: none;
+    opacity: 0;
+    outline: none !important;
+  }
+
+  &::-ms-track {
+    outline: none !important;
+    appearance: none;
+    opacity: 0;
+  }
+
+  &::-webkit-slider-thumb {
+    width: d1-2($space);
+    height: d1-2($space);
+    border-radius: 50%;
+    border-radius: 2em;
+    appearance: none;
+    background: white;
+    border: 2px solid v(black);
+    transition: border 0.1s ease-in-out, box-shadow 0.2s ease-in-out,
+      transform 0.1s ease-in-out;
+    box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.15);
+  }
+
+  &::-moz-range-thumb {
+    width: d1-2($space);
+    height: d1-2($space);
+    border-radius: 50%;
+    appearance: none;
+    background: white;
+    border: 2px solid v(black);
+    transition: box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0);
+  }
+}
