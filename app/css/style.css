@@ -1,0 +1,699 @@
+/*=== google fonts ===*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900;8..144,1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/*=== Basic css ===*/
+html,
+body,
+header,
+footer,
+main,
+nav,
+section,
+div,
+menu,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+strong,
+i,
+ol,
+ul,
+li,
+form,
+label,
+button {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin: 0;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+html {
+    font-size: 1.76vh;
+}
+  
+.step.inactive {
+    display: block;
+    pointer-events: none; /* Deshabilita eventos de clic */
+    opacity: 0.4; /* Efecto de velo gris */
+}
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 33px;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  span.slider{
+    height: 3.15vh;
+    width: 5.6vh;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 2.84vh;
+    width: 2.84vh;
+    left: 0.19vh;
+    bottom: 0.19vh;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #344054;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #344054;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 3.15vh;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+img.btn-icons {
+    width: 2.6vh;
+    height: 2.6vh;
+}
+
+.header-item-inner img {
+    height: 5.04vh;
+    max-height: 46px;
+}
+
+.filter-slider ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Esto alinea los elementos de la lista horizontalmente */
+    overflow-x: auto; /* Permite desplazamiento horizontal si hay muchos elementos */
+    white-space: nowrap; /* Asegura que los elementos no se envuelvan */
+  }
+  
+  .filter-slider li {
+    display: inline-block; /* Elementos de lista en línea */
+    margin-right: 10px; /* Espacio entre elementos de la lista */
+    cursor: pointer; /* Cursor en forma de mano para indicar que son clickeables */
+  }
+  
+  .filter-slider img {
+    display: block; /* Evita márgenes debajo de las imágenes */
+    width: auto; /* Mantén la anchura original de la imagen o define una específica */
+    height: 30px; /* Altura fija para todas las imágenes */
+    border: 2px solid transparent; /* Borde transparente que se puede cambiar para indicar selección */
+  }
+  
+  .filter-slider li:hover img {
+    border-color: blue; /* Indica visualmente el filtro sobre el que se pasa el ratón */
+  }
+  
+  .filter-slider li.selected img {
+    border-color: red; /* Indica el filtro seleccionado */
+  }
+  
+
+button:focus,
+a:focus,
+input:focus,
+textarea:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.2s all ease;
+    -webkit-transition: 0.2s all ease;
+    -moz-transition: 0.2s all ease;
+}
+
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+body {	
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;    
+	background: #fff;
+	color: #333333;	
+}
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/*=== Header area start ===*/
+
+.header-area {
+    padding: 0.878vh;
+    border-bottom: 1px solid #E5E5E5;
+    background: #FFF;
+}
+
+.header-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1865px;
+    padding: 0 28px;
+}
+
+.header-item-inner2 ul {
+    display: flex;
+    align-items: center;
+    background: #344054;
+    width: 65px;
+    height: 35px;
+    border-radius: 40px;
+    padding: 5px;
+    justify-content: space-between;
+}
+
+.header-item-inner2 ul li {
+    font-size: 15px;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s all ease;
+    -webkit-transition: 0.2s all ease;
+    -moz-transition: 0.2s all ease;
+}
+
+.header-item-inner2 ul li.active {
+    background: #fff;
+    color: #344054;
+}
+
+/*=== step area start ===*/
+
+.step-area-inner {
+    display: flex;
+}
+
+.step-item {
+    width: 100%;
+    padding: 3.29vh 4.28vh 3.29vh 3.29vh;
+    min-height: 93.08vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-item-inner {
+    width: 100%;
+    border-radius: 8.66px;
+    border: 1px dashed #9E9E9E;
+    background: rgba(250, 250, 250, 0.70);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 50px 10px;
+}
+
+.step-item-inner input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.step-item-inner2 img {
+    width: 5.49vh;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.step-item-inner2 p {
+    color: #344054;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.step-item2 {
+    width: 47vh;
+    border-left: 1px solid #E4E7EC;
+    background: #F9FAFB;
+    padding: 3.29vh 3.29vh 3.29vh;
+    min-height: 93.08vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.step-item2 h2 {
+    color: #344053;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 2.2vh;
+    display: flex;
+    align-items: center;
+}
+
+.step-item2-inner.step-item2-inner10{
+    padding-top: 0px;
+}
+.step-item2-inner h2 {
+    font-family: 'Roboto Flex', sans-serif;
+}
+
+.step-item2-inner11 {
+    width: 100%;
+    height: 20vh;
+    max-height: 216px;
+    position: relative;
+    display: flex; /* Usando Flexbox para centrar */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    overflow: hidden; /* En caso de que la imagen sea más grande que el contenedor */
+}
+
+.step-item2-inner11 input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.step-item2-inner .step-item2-inner11 img.default {
+    max-width: 100%; /* La imagen no excederá el ancho del contenedor */
+    display: block; /* Elimina cualquier espacio extra debajo de la imagen */
+}
+
+.step-item2-inner .step-item2-inner11 img.crop {
+    max-width: 100%; /* La imagen no excederá el ancho del contenedor */
+    max-height: 100%; /* La imagen no excederá el alto del contenedor */
+    display: block; /* Elimina cualquier espacio extra debajo de la imagen */
+}
+
+.step-item2-inner11 img.upload-icon {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 3.84vh;
+    height: 3.84vh;
+}
+
+.step-item2-inner10 {
+    padding-top: 2.2vh;
+    padding-bottom: 2.2vh;
+    border-bottom: 1px solid #E4E7EC;
+    width: 100%;
+}
+
+.step-item2-inner2 h2 span {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: block;
+    background: #344054;
+    margin-left: 12px;
+}
+
+.step-item2-inner2 div.form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.step-item2-inner2 div.inputs {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-item2-inner2 input {
+    color: #646464;
+    font-size: 1rem;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 8vh;
+    height: 3.84vh;   
+    border: 1px solid #E4E7EC;
+    background: #FFF;
+    border-radius: 0.6vh 0.6vh 0.6vh 0.6vh;
+}
+
+.step-item2-inner2 input::placeholder {
+    opacity: 1;
+    color: #646464;
+}
+
+.step-item2-inner2 div img {
+    display: block;
+}
+
+.step-item2-inner2 form input:last-of-type {
+    border-radius: 0px 6px 6px 0px; 
+}
+
+div.buttons-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+div.buttons-list button{
+    color: #646464;
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.84vh;
+    height: 3.84vh;
+    margin-right: 1.6vh;
+    border-radius: 0.6vh;
+    border: 1px solid #E4E7EC;
+    background: #FFF;
+}
+
+.wrapper_edit_buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;   
+}
+
+.action_buttons {
+    color: #646464;
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.84vh;
+    height: 3.84vh;
+    border-radius: 0.6vh;
+    border: 1px solid #E4E7EC;
+    background: #FFF;
+}
+
+div.buttons-list button.active {
+    color: #FFF;
+    border: none;
+    background: linear-gradient(0deg, #344054 0%, #344054 100%), #FFF;
+}
+
+.step-item2-inner12 {
+    margin-top: 2.2vh;
+}
+
+#slider-range-min {
+    border-radius: 10px;
+    margin-bottom: 1.976vh;
+}
+
+input[type=range] {
+    -webkit-appearance: none; /* Necesario para deshacerse del estilo predeterminado en WebKit/Blink */
+    width: 100%; /* Ancho completo para que ocupe el contenedor */
+    /*margin: 10px 0; *//* Espacio alrededor para evitar que se toque con otros elementos */
+  }
+  
+  /* Estilo para la pista */
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    background: #ddd; /* Color de fondo de la pista */
+    border-radius: 4px; /* Bordes redondeados */
+  }
+  
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc; /* Color de fondo de la pista al enfocar */
+  }
+  
+  /* Estilo para el pulgar */
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Necesario para deshacerse del estilo predeterminado en WebKit/Blink */
+    border: none; /* Elimina cualquier borde predeterminado */
+    height: calc(1.5vh ); /* ajusta el tamaño del pulgar */
+    width: calc(1.5vh); /* mantiene la proporción del tamaño */
+    border-radius: 50%; /* Hace el pulgar completamente redondo */
+    background: #344054; /* Color de fondo del pulgar */
+    margin-top: calc(-0.75vh + 2px); /* ajusta la alineación del pulgar */
+    cursor: pointer; /* Cambia el cursor a un puntero para indicar que es deslizable */
+  }
+
+  input[type=range]::-moz-range-thumb {
+    height: calc(1.5vh ); /* ajusta el tamaño del pulgar */
+    width: calc(1.5vh); /* mantiene la proporción del tamaño */
+    border-radius: 50%;
+    background: #344054;
+    cursor: pointer;
+  }
+  
+  /* Estilo para el pulgar al enfocarse/hover/activo */
+  input[type=range]:focus::-webkit-slider-thumb,
+  input[type=range]:hover::-webkit-slider-thumb {
+    background: #555; /* Color de fondo del pulgar al enfocar/hover */
+  }
+  
+  /* Mozilla Firefox requiere un conjunto diferente de pseudo-elementos */
+  input[type=range]::-moz-range-track {
+    background: #ddd;
+    border-radius: 4px;
+  }
+  
+  input[type=range]::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #344054;
+    cursor: pointer;
+  }
+  
+  /* Para Internet Explorer */
+  input[type=range]::-ms-track {
+    background: transparent; /* IE no permite cambiar el fondo de la pista, así que lo hacemos transparente */
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+  }
+  
+  input[type=range]::-ms-thumb {
+    height: 1.976vh;
+    width: 1.976vh;
+    border-radius: 50%;
+    background: #344054;
+    cursor: pointer;
+  }
+  
+  input[type=range]::-ms-fill-lower {
+    background: #ddd;
+    border-radius: 4px;
+  }
+  
+  input[type=range]::-ms-fill-upper {
+    background: #ddd;
+    border-radius: 4px;
+  }
+
+.ui-widget-header {
+    border-radius: 10px;
+    background: #344054;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #fff;
+    background: #344054;
+    border-radius: 50%;
+    border-radius: 50%;
+    box-shadow: none;
+    margin-top: -2px;
+    cursor: pointer;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    top: -2px;
+}
+
+.step-item2-inner3 a {
+    color: #FFF;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    height: 3.84vh;
+    border-radius: 0.6vh;
+    background: #344054;
+    line-height: 17.4px;
+}
+
+.step-item2-inner5 ul {
+    display: flex;
+    align-items: center;
+}
+
+ul li button.active {
+    color: #fff;
+    background: #344054; 
+}
+
+.step-item2-inner6 {
+    padding-top: 2.2vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.step-item2-inner6 h2 strong {
+    font-size: 25px;
+    font-weight: 700;
+    margin-left: auto;
+}
+
+.step-item2-inner6 a {
+    color: #FFF;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 17.4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    border-radius: 0.6vh;
+    background: #344054;
+}
+
+#buy_panel{
+    height: 5.5vh;
+    width: 100%;
+}
+
+#woodxel_panel_3d{
+    margin-top: 10px;
+    height: 3.84vh;
+}
+
+.step-item2-inner6 button {
+    color: #FFF;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 17.4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    border-radius: 0.6vh;
+    background: #344054;
+}
+
+.step-item2 a:hover {
+    opacity: .8;
+}
+
+/*  dark mode start  */
+
+.dark-mode {
+    background: #344054;
+}
+
+.dark-mode .header-area {
+    background: #344054;
+    border-color: #fff;
+}
+
+.dark-mode .header-item-inner2 ul {
+    background: #fff;
+}
+
+.dark-mode .header-item-inner2 ul li {
+    color: #344054;
+}
+
+.dark-mode .header-item-inner2 ul li.active {
+    background: #344054;
+    color: #fff;
+}
+
+.dark-mode .step-area {
+    background: #344054;
+}
+
+.dark-mode .step-area {
+    background: #344054;
+}
+
+.dark-mode .step-item-inner {
+    background: #fff;
+}
+
+.dark-mode .step-item2 {
+    background: #fff;
+}

@@ -1,0 +1,606 @@
+/*=== google fonts ===*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900;8..144,1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+/*=== Basic css ===*/
+html,
+body,
+header,
+footer,
+main,
+nav,
+section,
+div,
+menu,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+strong,
+i,
+ol,
+ul,
+li,
+form,
+label,
+button {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin: 0;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+.filter-slider ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Esto alinea los elementos de la lista horizontalmente */
+    overflow-x: auto; /* Permite desplazamiento horizontal si hay muchos elementos */
+    white-space: nowrap; /* Asegura que los elementos no se envuelvan */
+  }
+  
+  .filter-slider li {
+    display: inline-block; /* Elementos de lista en línea */
+    margin-right: 10px; /* Espacio entre elementos de la lista */
+    cursor: pointer; /* Cursor en forma de mano para indicar que son clickeables */
+  }
+  
+  .filter-slider img {
+    display: block; /* Evita márgenes debajo de las imágenes */
+    width: auto; /* Mantén la anchura original de la imagen o define una específica */
+    height: 30px; /* Altura fija para todas las imágenes */
+    border: 2px solid transparent; /* Borde transparente que se puede cambiar para indicar selección */
+  }
+  
+  .filter-slider li:hover img {
+    border-color: blue; /* Indica visualmente el filtro sobre el que se pasa el ratón */
+  }
+  
+  .filter-slider li.selected img {
+    border-color: red; /* Indica el filtro seleccionado */
+  }
+  
+
+button:focus,
+a:focus,
+input:focus,
+textarea:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.2s all ease;
+    -webkit-transition: 0.2s all ease;
+    -moz-transition: 0.2s all ease;
+}
+
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+body {	
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;    
+	background: #fff;
+	color: #333333;	
+}
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/*=== Header area start ===*/
+
+.header-area {
+    padding: 8px;
+    border-bottom: 1px solid #E5E5E5;
+    background: #FFF;
+}
+
+.header-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1865px;
+    padding: 0 28px;
+}
+
+.header-item-inner2 ul {
+    display: flex;
+    align-items: center;
+    background: #344054;
+    width: 65px;
+    height: 35px;
+    border-radius: 40px;
+    padding: 5px;
+    justify-content: space-between;
+}
+
+.header-item-inner2 ul li {
+    font-size: 15px;
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s all ease;
+    -webkit-transition: 0.2s all ease;
+    -moz-transition: 0.2s all ease;
+}
+
+.header-item-inner2 ul li.active {
+    background: #fff;
+    color: #344054;
+}
+
+/*=== step area start ===*/
+
+.step-area-inner {
+    display: flex;
+}
+
+.step-item {
+    width: calc(100% - 312px);
+    padding: 30px 39px 30px 30px;
+    min-height: calc(100vh - 68px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-item-inner {
+    width: 100%;
+    border-radius: 8.66px;
+    border: 1px dashed #9E9E9E;
+    background: rgba(250, 250, 250, 0.70);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 50px 10px;
+}
+
+.step-item-inner input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.step-item-inner2 img {
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.step-item-inner2 p {
+    color: #344054;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.step-item2 {
+    width: 312px;
+    border-left: 1px solid #E4E7EC;
+    background: #F9FAFB;
+    padding: 30px 30px 30px;
+    min-height: calc(100vh - 63px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.step-item2 h2 {
+    color: #344053;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+}
+
+.step-item2-inner.step-item2-inner10{
+    padding-top: 0px;
+}
+.step-item2-inner h2 {
+    font-family: 'Roboto Flex', sans-serif;
+}
+
+.step-item2-inner11 {
+    width: 252px;
+    height: 139px;
+    position: relative;
+    display: flex; /* Usando Flexbox para centrar */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    overflow: hidden; /* En caso de que la imagen sea más grande que el contenedor */
+}
+
+.step-item2-inner11 input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.step-item2-inner img {
+    max-width: 100%; /* La imagen no excederá el ancho del contenedor */
+    max-height: 100%; /* La imagen no excederá el alto del contenedor */
+    display: block; /* Elimina cualquier espacio extra debajo de la imagen */
+}
+
+.step-item2-inner10 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E4E7EC;
+    width: 100%;
+}
+
+.step-item2-inner2 h2 span {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: block;
+    background: #344054;
+    margin-left: 12px;
+}
+
+.step-item2-inner2 div.form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.step-item2-inner2 div.inputs {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-item2-inner2 input {
+    color: #646464;
+    font-size: 16px;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 73px;
+    height: 35px;
+    border-radius: 6px 0px 0px 6px;
+    border: 1px solid #E4E7EC;
+    background: #FFF;
+}
+
+.step-item2-inner2 input::placeholder {
+    opacity: 1;
+    color: #646464;
+}
+
+.step-item2-inner2 div img {
+    display: block;
+    margin: 0 10px;
+}
+
+.step-item2-inner2 form input:last-of-type {
+    border-radius: 0px 6px 6px 0px; 
+}
+
+ul li button {
+    color: #646464;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    margin-right: 15px;
+    border-radius: 6px;
+    border: 1px solid #E4E7EC;
+    background: #FFF;
+}
+
+.step-item2-inner3 ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wrapper_edit_buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;   
+}
+
+.action_buttons {
+    color: #646464;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    border: 1px solid #E4E7EC;
+    background: #FFF;
+}
+
+ul li.active {
+    border: none;
+    background: linear-gradient(0deg, #344054 0%, #344054 100%), #FFF;
+}
+
+.step-item2-inner12 {
+    margin-top: 20px;
+}
+
+#slider-range-min {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+input[type=range] {
+    -webkit-appearance: none; /* Necesario para deshacerse del estilo predeterminado en WebKit/Blink */
+    width: 100%; /* Ancho completo para que ocupe el contenedor */
+    margin: 10px 0; /* Espacio alrededor para evitar que se toque con otros elementos */
+  }
+  
+  /* Estilo para la pista */
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    background: #ddd; /* Color de fondo de la pista */
+    border-radius: 4px; /* Bordes redondeados */
+  }
+  
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc; /* Color de fondo de la pista al enfocar */
+  }
+  
+  /* Estilo para el pulgar */
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Necesario para deshacerse del estilo predeterminado en WebKit/Blink */
+    border: none; /* Elimina cualquier borde predeterminado */
+    height: 20px; /* Altura del pulgar */
+    width: 20px; /* Ancho del pulgar */
+    border-radius: 50%; /* Hace el pulgar completamente redondo */
+    background: #000; /* Color de fondo del pulgar */
+    margin-top: -6px; /* Ajuste para alinear el pulgar con la pista */
+    cursor: pointer; /* Cambia el cursor a un puntero para indicar que es deslizable */
+  }
+  
+  /* Estilo para el pulgar al enfocarse/hover/activo */
+  input[type=range]:focus::-webkit-slider-thumb,
+  input[type=range]:hover::-webkit-slider-thumb {
+    background: #555; /* Color de fondo del pulgar al enfocar/hover */
+  }
+  
+  /* Mozilla Firefox requiere un conjunto diferente de pseudo-elementos */
+  input[type=range]::-moz-range-track {
+    background: #ddd;
+    border-radius: 4px;
+  }
+  
+  input[type=range]::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #000;
+    cursor: pointer;
+  }
+  
+  /* Para Internet Explorer */
+  input[type=range]::-ms-track {
+    background: transparent; /* IE no permite cambiar el fondo de la pista, así que lo hacemos transparente */
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+  }
+  
+  input[type=range]::-ms-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #000;
+    cursor: pointer;
+  }
+  
+  input[type=range]::-ms-fill-lower {
+    background: #ddd;
+    border-radius: 4px;
+  }
+  
+  input[type=range]::-ms-fill-upper {
+    background: #ddd;
+    border-radius: 4px;
+  }
+
+
+.ui-widget-content {
+    /*height: 8px;
+    border-radius: 10px;
+    background: #E5E5E5;
+    margin-bottom: 24px;*/
+}
+
+.ui-widget-header {
+    border-radius: 10px;
+    background: #344054;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #fff;
+    background: #344054;
+    border-radius: 50%;
+    border-radius: 50%;
+    box-shadow: none;
+    margin-top: -2px;
+    cursor: pointer;
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+    top: -2px;
+}
+
+.step-item2-inner3 > a {
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 35px;
+    border-radius: 6px;
+    background: #344054;
+}
+
+.step-item2-inner5 ul {
+    display: flex;
+    align-items: center;
+}
+
+/*.step-item2-inner5 ul li button {
+    color: #646464;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    margin-right: 15px;
+    border-radius: 6px;
+    border: 1px solid #E4E7EC;
+    background: #FFF;
+}*/
+
+ul li button.active {
+    color: #fff;
+    background: #344054; 
+}
+
+.step-item2-inner6 {
+    padding-top: 20px;
+    width: 100%;
+}
+
+.step-item2-inner6 h2 strong {
+    font-size: 25px;
+    font-weight: 700;
+    margin-left: auto;
+}
+
+.step-item2-inner6 a {
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 17.4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    border-radius: 6px;
+    background: #344054;
+}
+
+#buy_panel{
+    height: 50px;
+    width: 100%;
+}
+
+#woodxel_panel_3d{
+    margin-top: 10px;
+    height: 35px;
+}
+
+.step-item2-inner6 button {
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 100%;
+    border-radius: 6px;
+    background: #344054;
+}
+
+.step-item2 a:hover {
+    opacity: .8;
+}
+
+/*  dark mode start  */
+
+.dark-mode {
+    background: #344054;
+}
+
+.dark-mode .header-area {
+    background: #344054;
+    border-color: #fff;
+}
+
+.dark-mode .header-item-inner2 ul {
+    background: #fff;
+}
+
+.dark-mode .header-item-inner2 ul li {
+    color: #344054;
+}
+
+.dark-mode .header-item-inner2 ul li.active {
+    background: #344054;
+    color: #fff;
+}
+
+.dark-mode .step-area {
+    background: #344054;
+}
+
+.dark-mode .step-area {
+    background: #344054;
+}
+
+.dark-mode .step-item-inner {
+    background: #fff;
+}
+
+.dark-mode .step-item2 {
+    background: #fff;
+}

@@ -1,0 +1,13 @@
+.icon-btn {
+    background: #fff;
+    border: 0px ;
+    outline: none;
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+  
+  .icon-btn:active,
+  .icon-btn.active {
+    border: none;
+    transform: translateY(2px);
+  }
+  

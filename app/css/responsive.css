@@ -1,0 +1,45 @@
+/*
+====================================
+large Screen - Others
+====================================
+*/
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+
+
+
+
+
+}
+
+/*
+====================================
+Small Screen - Tablate
+====================================
+*/
+@media screen and (min-width: 768px) and (max-width: 991px) {
+
+
+
+
+
+}
+
+/*
+====================================
+Small Screen - Mobile
+====================================
+*/
+@media screen and (max-width: 767px) {	
+
+
+	/*=== Header area start ===*/
+
+	.header-item {
+	    padding: 0 15px;
+	}
+
+
+
+
+}
