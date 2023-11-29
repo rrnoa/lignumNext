@@ -435,7 +435,7 @@ const BuyPanel = ({pixelatedImage, colorsArray, blockSize, xBlocks, yBlocks}) =>
   };
 
   return (
-    <a id="buy_panel" href="#" onClick={handleBuy}>WOODXEL Panel + 3D <strong style={{fontSize: '1.2rem'}}>&nbsp;$27823</strong></a>
+    <a id="buy_panel" href="#" onClick={handleBuy}>WOODXEL Panel <strong style={{fontSize: '1.2rem'}}>&nbsp;$27823</strong></a>
   )
 }
 

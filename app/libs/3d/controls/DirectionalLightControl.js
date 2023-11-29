@@ -106,27 +106,27 @@ function DirectionalLightControl(gui, light, cameraHelper) {
     light.shadow.camera.updateProjectionMatrix();
   });
 
-  folder.add(params, "top", 0, 20).onChange((value) => {
+  folder.add(params, "top", 0, 100).onChange((value) => {
     light.shadow.camera.top = value;
     if (cameraHelper) cameraHelper.update();
     light.shadow.camera.updateProjectionMatrix();
   });
 
-  folder.add(params, "bottom", -20, 0).onChange((value) => {
+  folder.add(params, "bottom", -100, 0).onChange((value) => {
     if (cameraHelper) cameraHelper.update();
 
     light.shadow.camera.bottom = value;
     light.shadow.camera.updateProjectionMatrix();
   });
 
-  folder.add(params, "left", -20, 0).onChange((value) => {
+  folder.add(params, "left", -100, 0).onChange((value) => {
     light.shadow.camera.left = value;
     if (cameraHelper) cameraHelper.update();
 
     light.shadow.camera.updateProjectionMatrix();
   });
 
-  folder.add(params, "right", 0, 20).onChange((value) => {
+  folder.add(params, "right", 0, 100).onChange((value) => {
     light.shadow.camera.right = value;
     if (cameraHelper) cameraHelper.update();
     light.shadow.camera.updateProjectionMatrix();

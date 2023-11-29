@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    //basePath: "/out7",
+    //basePath: "/editor",
     reactStrictMode: false,
     output: "export",
 }

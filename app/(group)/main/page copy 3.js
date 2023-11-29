@@ -3,65 +3,76 @@ import IconButton from '@/app/components/IconButton';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Cropper from "react-easy-crop";
 import "react-easy-crop/react-easy-crop.css";
+import getCroppedImg, { adjustBrightness } from "@/app/libs/cropImage";
 import Scene3d from "@/app/components/Scene3d";
 import BuyPanel from '@/app/components/BuyPanel';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
-import debounce from 'lodash/debounce';
 import Switch from "react-switch";
-import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
-import getCroppedImg from '@/app/libs/cropImage';
-
 
 export default function Main() {
 
+	const canvasRef = useRef(null); // Referencia al canvas
 	const [uploadedImage, setUploadedImage] = useState("");
-	const [previewImage, setPreviewImage] = useState(null);
+	const [originalImage, setOriginalImage] = useState("");
+	const [intermediateImage, setIntermediateImage] = useState("");
 
 	const [currentStep, setCurrentStep] = useState(1);
 
-	const [theme, setTheme] = useState('light'); // Valor predeterminado
-	
 	const [pixelInfo, setPixelInfo] = useState({ // informacion de la imagen pixelada
 		colorsArray: [],
 		croppedImg: ""
 	});
 
+	const [theme, setTheme] = useState('light'); // Valor predeterminado
+
   // Definir tus filtros y las imágenes de muestra para cada uno  
 
 	const [activeButton, setActiveButton] = useState("brightness"); 
-	const [rotation, setRotation] = useState(0);
-	const [contrast, setContrast] = useState(100);
-	const [brightness, setBrightness] = useState(100);
+	const [adjustments, setAdjustments] = useState({       // Ajustes aplicados
+		tilt: 0,
+		brightness: 0,
+		contrast: 0,
+		hue: 0
+	});
 
 	const [currentState, setCurrentState] = useState("upload");//upload,crop,view	
     
     /*Opciones del crop */
     const [width, setWidth] = useState(24);
     const [height, setHeight] = useState(24);
-    const [crop, setCrop] = useState({ x: 0, y: 0});
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
-	
-	const hasFunctionRunRef = useRef(false);
+	const [croppedImg, setCroppedImg] = useState();
 
 	const [blockSize, setBlockSize] = useState(2);//1,2,3	
-	
-	const cropperRef = useRef(null);
-
-	const croppedAreaPixelsRef = useRef(null);
-
-	const isSliderChangeRef = useRef(false);
 
 	// Función para cambiar el tema
 	const toggleTheme = () => {
 		setTheme(theme === 'light' ? 'dark' : 'light');
 	};
 
+	/*useEffect(() => {
+		// Inicializa el canvas cuando el componente se monta
+		const canvas = canvasRef.current;
+		const ctx = canvas.getContext('2d');
+		const image = new Image();
+		image.onload = () => {
+		  canvas.width = image.width;
+		  canvas.height = image.height;
+		  ctx.drawImage(image, 0, 0);
+		};
+		image.src = originalImage;
+		console.log("useeffect", originalImage);
+	  }, [originalImage]);
+*/
+
 	// Efecto para actualizar el atributo data-theme
 	useEffect(() => {
 		console.log('data-theme', theme);
 		document.documentElement.setAttribute('data-theme', theme);
-	}, [theme]);	
+	}, [theme]);
+
 
 	// Función para avanzar al siguiente paso
 	const goToNextStep = () => {
@@ -72,38 +83,15 @@ export default function Main() {
 	const goToPreviousStep = () => {
 		setCurrentStep(prevStep => prevStep - 1);
 		if(currentState === 'view') setCurrentState('crop');
-	};	
-
-	// Actualiza el estado cuando el recorte se completa
-	const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-		croppedAreaPixelsRef.current = croppedAreaPixels;
-		console.log("isSliderChangeRef.current",isSliderChangeRef.current);
-		if (!isSliderChangeRef.current) {//asegurance que cuandos e aha slider no se actualizae la iamgen
-			updatePreviewImage();
-		} 
-	}, [brightness,rotation,contrast]);
-	
-
-	const updatePreviewImage = async () => {
-		if (!cropperRef.current) {
-			return;
-		  }
-		  const croppedImage = await getCroppedImg(cropperRef.current.imageRef.current, croppedAreaPixelsRef.current, rotation, brightness, contrast);
-		  // Suponiendo que getCroppedImg devuelve una URL de la imagen
-		  setPreviewImage(croppedImage);
-	  };
-
-		// Manejador para cuando el usuario suelta el control deslizante
-	const handleSliderChangeComplete = () => {
-		isSliderChangeRef.current = false;
-		updatePreviewImage();
 	};
-
-	// Estilos para aplicar brillo, contraste y rotación en tiempo real
-	const imageStyle = {
-		filter: `brightness(${brightness}%) contrast(${contrast}%)`,		
-		transition: 'filter 0.3s ease, transform 0.3s ease'
-	  };
+	
+    /**
+     * Cuando se hace crop
+     */
+    const onCropComplete = async (croppedArea, croppedAreaPixels) => {
+		console.log("crop complete");
+    	const cropUrl = await getCroppedImg(uploadedImage, croppedAreaPixels);
+    };
 
     /** cuando se sube una imagen */
     const handleImageChange = (e) => {
@@ -111,6 +99,7 @@ export default function Main() {
         if (file) {
 		  const img = URL.createObjectURL(file);
           setUploadedImage(img);
+		  setOriginalImage(img);
 		  setCurrentState("crop");
 		  setCurrentStep(2);
         }
@@ -137,7 +126,55 @@ export default function Main() {
 	const handleInputsLock = () => {		
 		goToNextStep();
 	};
-	
+
+	// Función para aplicar el cambio cuando el usuario selecciona otro boton de control
+	const applyAllAdjustments = async () => {
+		let newImage = originalImage;
+		if (adjustments.tilt !== 0) {
+		  newImage = await adjustTilt(newImage, adjustments.tilt);
+		}
+		if (adjustments.brightness !== 0) {
+		  newImage = await adjustBrightness(newImage, adjustments.brightness);
+		}
+		if (adjustments.contrast !== 0) {
+		  newImage = await adjustContrast(newImage, adjustments.contrast);
+		}
+
+		setIntermediateImage(newImage);
+		setUploadedImage(newImage);
+		
+	};
+	/**
+	 * Cuando se mueve el slider
+	 */
+	const handleSliderChange = async (value) => {
+
+		const newValue = parseInt(value);	  
+		// Actualiza el ajuste activo
+		const newAdjustments = {
+		  ...adjustments,
+		  [activeButton]: newValue
+		};
+		setAdjustments(newAdjustments);
+
+		const ctx = canvasRef.current.getContext('2d'); /* referencia al contexto del canvas */;
+		const canvasWidth = canvasRef.current.width;/* ancho actual del canvas */;
+		const canvasHeight = canvasRef.current.height;/* alto actual del canvas */;
+
+		let newImage = intermediateImage || originalImage; // Usa la imagen intermedia si está disponible	  
+	  
+		// Aplica solo el ajuste correspondiente al botón activo
+		switch (activeButton) {
+		  case 'brightness':
+			console.log(newImage, newValue);
+			newImage = adjustBrightness(uploadedImage, newValue);
+			//newImage = await adjustTilt(ctx, originalImage, newValue, canvasWidth, canvasHeight);
+			break;		  
+		  default:
+			break;
+		}	  
+		setUploadedImage(newImage);
+	};	  
 
 	/**
 	 * Cambia tamaño de bloques
@@ -149,6 +186,7 @@ export default function Main() {
 	 * Click sobre uno de los botones de edicion
 	 */
 	const editBtnHandler = (btn) => {
+		applyAllAdjustments();
 		setActiveButton(btn);	
 	}	
 
@@ -159,8 +197,8 @@ export default function Main() {
 	}
 
 	const PreviewImg = () => {
-		const imageSrc = previewImage || "images/default.jpeg";
-		const isDefaultImage = (imageSrc === "images/default.jpeg");
+		const imageSrc = croppedImg || "images/default.jpeg";
+		const isDefaultImage = imageSrc === "images/default.jpeg";
 	
 		return (			
 				<img 
@@ -174,26 +212,6 @@ export default function Main() {
 	const handleDarkMode = ()=> {
 		setDarkMode(darkMode => !darkMode);
 	}
-
-	const handleExportScene = (scene) => {
-		const exporter = new GLTFExporter();
-        exporter.parse(scene, (gltf) => {
-			// gltf es un objeto JSON que representa tu escena
-			const output = JSON.stringify(gltf, null, 2);
-			downloadJSON(output, 'scene.gltf');
-		});
-    };
-	const downloadJSON = (json, filename) => {
-		const blob = new Blob([json], { type: 'application/json' });
-		const url = URL.createObjectURL(blob);
-		const link = document.createElement('a');
-		link.href = url;
-		link.download = filename;
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
-		URL.revokeObjectURL(url);
-	};
 	
   return (
     <>
@@ -247,18 +265,17 @@ export default function Main() {
 			<div className="step-area-inner">
 				<div className="step-item" >
 					<div className="step-item-inner">
+					<canvas ref={canvasRef} style={{ display: 'none' }} /> {/* Agrega el canvas al DOM */}
                         {currentState == "crop" && (
                             <Cropper
-							ref={cropperRef}
                             image={uploadedImage}
-							rotation={rotation}							
-							onCropChange={setCrop}
-      						onCropComplete={onCropComplete}                             crop={crop}
+                            crop={crop}
                             zoom={zoom}
 							zoomSpeed={0.1}
                             aspect={width / height}
-                            onZoomChange={(newZoom) => setZoom(newZoom)}
-							style={{ containerStyle: { width: '100%', height: '100%' }, mediaStyle: imageStyle }}
+                            onCropChange={setCrop}
+                            onZoomChange={setZoom}
+                            onCropComplete={onCropComplete}
                             />
                         )}
                         {currentState=="upload" && (
@@ -276,9 +293,7 @@ export default function Main() {
 							width={width}
 							height={height}
 							blockSize={blockSize}
-							croppedImg = {previewImage}
-							onExport={handleExportScene}
-							//croppedImg = {uploadedImage}
+							croppedImg = {croppedImg}
 							setPixelInfo = {setPixelInfo}
 							/>
 						)}
@@ -325,8 +340,8 @@ export default function Main() {
 						<div className='wrapper_edit_buttons'>
 							<div className='buttons-list'>								
 								<IconButton 
-									isActive={activeButton == "rotate"?true:false} 
-									onClick={() => editBtnHandler("rotate")} 
+									isActive={activeButton == "tilt"?true:false} 
+									onClick={() => editBtnHandler("tilt")} 
 									icon="images/tilt.svg" 
 									activeIcon="images/tilt-active.svg" 
 								/>
@@ -350,52 +365,16 @@ export default function Main() {
 						</div>
 						
 						<div className="step-item2-inner12">
-							<div id="slider-range-min">	
-									{
-										activeButton === 'rotate' && (
-											<input
-											type="range"
-											className="range--brand"
-											min="-45"
-											max="45"
-											value={rotation}
-											onChange={(e) => {
-												isSliderChangeRef.current = true;
-												setRotation(parseInt(e.target.value));
-											}}
-											onMouseUp={handleSliderChangeComplete}
-
-											/>
-										)	
-									}	{
-										activeButton == 'contrast' && (
-										<input
-										type="range"
-										className="range--brand"
-										min="0"
-										max="200"
-										value={contrast}
-										onChange={e => setContrast(parseInt(e.target.value))}
-										onMouseUp={handleSliderChangeComplete}
-
-										/>
-										)
-									}
-									{
-										activeButton == 'brightness' && (
-										<input
-										type="range"
-										className="range--brand"
-										min="0"
-										max="200"
-										value={brightness}
-										onChange={e => setBrightness(parseInt(e.target.value))}
-										onMouseUp={handleSliderChangeComplete}
-
-										/>
-										)
-									}					
-									
+							<div id="slider-range-min">								
+									<input
+									type="range"
+									className="range--brand"
+									min="-100"
+									max="100"
+									value={adjustments[activeButton]}
+									onChange={(e) => handleSliderChange(e.target.value)}
+									//onMouseUp={sliderUpHandler}
+									/>
 							</div>
 						</div>
 						<div style={{display: 'flex', justifyContent: 'right'}}>
@@ -431,7 +410,7 @@ export default function Main() {
 						xBlocks = {Math.floor(width / blockSize)}
 						yBlocks = {Math.floor(height / blockSize)}
 						/>
-						<a id="woodxel_panel_3d" href="#" >3D Model <strong style={{fontSize: '1.2rem'}}>&nbsp;$25</strong></a>
+						<a id="woodxel_panel_3d" href="#">3D Model <strong style={{fontSize: '1.2rem'}}>&nbsp;$25</strong></a>
 					</div>
 				</div>
 			</div>

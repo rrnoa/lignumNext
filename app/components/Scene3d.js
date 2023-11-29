@@ -11,16 +11,19 @@ import MaterialControl from '../libs/3d/controls/MaterialControl';
 import RendererControl from '../libs/3d/controls/RendererControl';
 
 
-const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo }) => {
+const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport}) => {
     const canvasRef = useRef();
 	const animationFrameId = useRef(); // Referencia para almacenar el ID del frame de animación
 	const renderRef = useRef();
+	const sceneRef = useRef(null); // Referencia para la escena
+
 	
     useEffect(() => {
 		console.log("useEffect Scene3d");
         const xBlocks = Math.floor(width / blockSize);
 		const yBlocks = Math.floor(height / blockSize);
 		const scene = new THREE.Scene();
+		sceneRef.current = scene; // Almacena la escena en la referencia
 		scene.background = new THREE.Color(0xffffff);
     	const gui = new GUI();
 		gui.close();
@@ -33,12 +36,12 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo }) => {
 						colorsArray: allColors 
 					});
 
-				if (typeof window !== "undefined") {
-						
+				if (typeof window !== "undefined") {					
+
 					const paintAreaWidth = canvasRef.current?.offsetWidth;
 					const paintAreaHeight = canvasRef.current?.offsetHeight;
 					const camera = new THREE.PerspectiveCamera(75, paintAreaWidth / paintAreaHeight, 2, 1000);
-					const cameraZPosition = Math.max(blockSize * xBlocks, blockSize * yBlocks);
+					const cameraZPosition = Math.max( width, height)+40;
 					camera.position.z = cameraZPosition;
 					camera.updateProjectionMatrix();
 				
@@ -62,11 +65,11 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo }) => {
 					directionalLight.castShadow = true;
 					//config cotrols
 					const controls = new OrbitControls(camera, renderer.domElement);
-					controls.minDistance = 10;
-					controls.maxDistance = cameraZPosition * 1.2;
+					//controls.minDistance = Math.max( width, height);
+					controls.maxDistance = cameraZPosition * 1.5;
 					controls.enablePan = false;
-					controls.maxPolarAngle = THREE.MathUtils.degToRad(120);
-					controls.minPolarAngle = THREE.MathUtils.degToRad(60);
+					controls.maxPolarAngle = THREE.MathUtils.degToRad(90);
+					controls.minPolarAngle = THREE.MathUtils.degToRad(45);
 					controls.maxAzimuthAngle = THREE.MathUtils.degToRad(30);
 					controls.minAzimuthAngle = THREE.MathUtils.degToRad(-30);
 					controls.update();
@@ -75,11 +78,66 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo }) => {
 					scene.add(rectLight);
 					scene.add(directionalLight);
 					const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+
+					const floorWidth = 600;
+					const floorDepth = 600;
+					//const floorGeometry = new THREE.BoxGeometry( floorWidth, 1, floorDepth );
+					const floorGeometry = new THREE.PlaneGeometry( floorWidth, floorDepth );
+					const floorMaterial = new THREE.MeshStandardMaterial( { color: 0xffffff } );
+					floorMaterial.side = THREE.DoubleSide;
+					const floorMesh = new THREE.Mesh( floorGeometry, floorMaterial );
+					floorMesh.rotateX(Math.PI/2);
+					floorMesh.position.set(0, - Math.ceil(height/2), floorDepth/2 - 3 );
+					floorMesh.receiveShadow = true;
+					//scene.add( floorMesh );
+
+					const wallHeight = 600;
+					const wallWidth = 600;
+					//const wallGeometry = new THREE.BoxGeometry( wallWidth, wallHeight, 1 );
+					const wallGeometry = new THREE.PlaneGeometry( wallWidth, wallHeight );
+					const wallMaterial = new THREE.MeshStandardMaterial( { color: 0xffffff } );
+					wallMaterial.side = THREE.DoubleSide;
+					const wallMesh = new THREE.Mesh( wallGeometry, wallMaterial );
+					//la altura del muro / 2, menos la mitad de la altura del cuadro
+					wallMesh.position.set(0, wallHeight/2 - Math.ceil(height/2) , -3 );
+					wallMesh.receiveShadow = true;
+					//scene.add( wallMesh );
+
 					//cargar la geometría
 					const loader = new OBJLoader();
 					loader.load("CUBO.obj", function (object) {
 						const blockGeometry = object.children[0].geometry;
 						paintFrame(scene, blockGeometry, allColors, material);
+						loader.load("dennis.obj", function (dennis) {
+							console.log("modelo cargado");
+							console.log(object);
+							
+							const box = new THREE.Box3().setFromObject(dennis);
+							const currentHeight = box.max.y - box.min.y; // Altura actual del objeto
+							const desiredHeight = 70;
+							const scaleRatio = desiredHeight / currentHeight; // La relación de escala necesaria para alcanzar la altura deseada
+							console.log(currentHeight, scaleRatio);
+						  // Escalar el objeto para alcanzar la altura deseada
+						  dennis.scale.set(scaleRatio, scaleRatio, scaleRatio);
+						  dennis.children[0].castShadow = true;
+							dennis.children[0].material.color = new THREE.Color(0x344054);
+							const stickmanOffsetX = 50;
+							const stickmanOffsetY = desiredHeight/2;
+							dennis.position.set(-stickmanOffsetX - Math.ceil(width/2), - Math.ceil(height/2), 10);
+
+							//scene.add(dennis);							
+
+						  },// called when loading is in progresses
+						  function ( xhr ) {
+						  
+							console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+						  
+						  },
+						  // called when loading has errors
+						  function ( error ) {
+							console.log( 'An error happened' );
+						  });
+						
 					});
 					
 					// Render the scene and camera
@@ -91,18 +149,11 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo }) => {
 					// Call the renderScene function to start the animation loop
 					renderScene();
 
-					AmbientLightControl(gui, ambientlight);
-					//let dirLightShadowMapViewer = new ShadowMapViewer(directionalLight);
+					AmbientLightControl(gui, ambientlight);					
 
-					let shadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-					shadowHelper.visible = false;
-					//scene.add(shadowHelper);
-
-					DirectionalLightControl(gui, directionalLight, shadowHelper);
+					DirectionalLightControl(gui, directionalLight);
 
 					scene.add(directionalLight.target);
-					scene.add(directionalLight);
-					DirectionalLightControl(gui, directionalLight);
 					RectLightControl(gui, rectLight);
 					MaterialControl(gui, material);
 					RendererControl(gui, renderer);
@@ -113,15 +164,32 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo }) => {
 					})
 					.then((data) => {
 						gui.load(data);
-						repositionLights(rectLight, directionalLight);
+						repositionLights(rectLight, directionalLight, scene);
 					})
 					.catch((error) => console.error("Error fetching the json:", error));
 
+					const onResize = () => {
+						if (canvasRef.current && renderRef.current) {
+							console.log("redimensionando..");
+							const width = canvasRef.current.offsetWidth;
+							const height = canvasRef.current.offsetHeight;
+							console.log(width,height);
+				
+							renderRef.current.setSize(width, height);
+							camera.aspect = width / height;
+							camera.updateProjectionMatrix();
+						}
+					};
+				
+					//window.addEventListener('resize', onResize);				
+
 				}
 			});
+			
 			// Función de limpieza
 			return () => {
 				console.log("desmontando");
+				//window.removeEventListener('resize', onResize);
 				gui.destroy();
 				cancelAnimationFrame(animationFrameId.current);
 				removeObjWithChildren(scene);
@@ -132,6 +200,12 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo }) => {
 				}
 			};
     }, [blockSize]); // Dependencias del efecto	
+
+	const handleSomeAction = () => {
+        if (onExport && sceneRef.current) {
+            onExport(sceneRef.current);
+        }
+    };
 
 	//limpiar la escena
 	const removeObjWithChildren = (obj) => {
@@ -349,17 +423,30 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo }) => {
 		return availableRotations;
 	  };
 
-	  const repositionLights = (rectLight, directionalLight) => {
+	  const repositionLights = (rectLight, directionalLight, scene) => {
 		//config Rect Light
 		let offsetRect = rectLight.position.y - 12;
-		rectLight.width = width * blockSize;
-		rectLight.position.y = (height * blockSize) / 2 + offsetRect;
-	
-		directionalLight.shadow.camera.top = (height * blockSize) / 2;
-		directionalLight.shadow.camera.left = - (width * blockSize) / 2;
-		directionalLight.shadow.camera.right = (width * blockSize) / 2;
-		directionalLight.shadow.camera.bottom = - (height * blockSize) / 2;
+		rectLight.width = width;
+		rectLight.position.y = (height) / 2 + offsetRect;
+
+		const offSet = 20;//para incluir al mu;eco  en las zombras
+		directionalLight.position.y = directionalLight.position.y + 30;
+		directionalLight.position.z = directionalLight.position.z + 30;
+		directionalLight.shadow.camera.far = directionalLight.shadow.camera.far + 120;
+		let dennisHeight = 70;
+		let overHeight = (height) > dennisHeight ? 0 : (dennisHeight - height); //la actura que Denni le lleva al cuadro
+		console.log("overHeight",height,dennisHeight,overHeight);
+
+		directionalLight.shadow.camera.top = height / 2 + overHeight;
+		directionalLight.shadow.camera.left = - (width) / 2 - 60;
+		directionalLight.shadow.camera.right = (width ) / 2;
+		directionalLight.shadow.camera.bottom = - (height) / 2;
+		let shadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+		//const helper = new THREE.DirectionalLightHelper( directionalLight, 5 );
+		scene.add( helper );
 		directionalLight.shadow.camera.updateProjectionMatrix();
+
+		//scene.add(shadowHelper);
 	  };
 	
 	  //Create color string
@@ -368,7 +455,10 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo }) => {
 	  };
 	
     return (
+		<>	
         <div ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+		<button onClick={handleSomeAction}>Export</button>
+		</>
     );
 };
 

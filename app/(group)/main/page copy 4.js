@@ -41,16 +41,11 @@ export default function Main() {
     const [height, setHeight] = useState(24);
     const [crop, setCrop] = useState({ x: 0, y: 0});
     const [zoom, setZoom] = useState(1);
-	
-	const hasFunctionRunRef = useRef(false);
+	const [croppedImg, setCroppedImg] = useState();
 
 	const [blockSize, setBlockSize] = useState(2);//1,2,3	
 	
 	const cropperRef = useRef(null);
-
-	const croppedAreaPixelsRef = useRef(null);
-
-	const isSliderChangeRef = useRef(false);
 
 	// Función para cambiar el tema
 	const toggleTheme = () => {
@@ -61,7 +56,7 @@ export default function Main() {
 	useEffect(() => {
 		console.log('data-theme', theme);
 		document.documentElement.setAttribute('data-theme', theme);
-	}, [theme]);	
+	}, [theme]);
 
 	// Función para avanzar al siguiente paso
 	const goToNextStep = () => {
@@ -72,30 +67,69 @@ export default function Main() {
 	const goToPreviousStep = () => {
 		setCurrentStep(prevStep => prevStep - 1);
 		if(currentState === 'view') setCurrentState('crop');
-	};	
+	};
+
+	// Estado para almacenar el área de recorte en píxeles
+	const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
 	// Actualiza el estado cuando el recorte se completa
-	const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-		croppedAreaPixelsRef.current = croppedAreaPixels;
-		console.log("isSliderChangeRef.current",isSliderChangeRef.current);
-		if (!isSliderChangeRef.current) {//asegurance que cuandos e aha slider no se actualizae la iamgen
-			updatePreviewImage();
-		} 
-	}, [brightness,rotation,contrast]);
+	const onCropComplete = useCallback(debounce((croppedArea, croppedAreaPixels) => {
+		console.log("cropcomplete");
+		setCroppedAreaPixels(croppedAreaPixels);
+	}, 2000), []);
+    
+	  // Función modificada para obtener la imagen recortada
+	const getCroppedImg = async () => {
+		if (!cropperRef.current || !cropperRef.current.imageRef.current || !croppedAreaPixels) {
+			console.log("No paso", croppedAreaPixels);
+		return null;
+		}
+		console.log("paso");
+		const imageElement = cropperRef.current.imageRef.current;
+		const canvas = document.createElement('canvas');
+		const ctx = canvas.getContext('2d');
 	
+		// Usa las dimensiones del área recortada en píxeles
+		const { x, y, width, height } = croppedAreaPixels;
+	
+		canvas.width = width;
+		canvas.height = height;
+	
+		// Aplica los ajustes de brillo, contraste y rotación
+		ctx.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
+		ctx.translate(canvas.width / 2, canvas.height / 2);
+		ctx.rotate((rotation * Math.PI) / 180);
+		ctx.drawImage(
+		imageElement,
+		x, y, width, height,
+		-canvas.width / 2, -canvas.height / 2, width, height
+		);
+	
+		// Convierte el canvas en una URL de imagen
+		return new Promise((resolve, reject) => {
+		canvas.toBlob(blob => {
+			if (!blob) {
+			reject(new Error('Canvas is empty'));
+			return;
+			}
+			resolve(URL.createObjectURL(blob));
+		}, 'image/jpeg');
+		});
+	};
+	  
 
 	const updatePreviewImage = async () => {
 		if (!cropperRef.current) {
 			return;
-		  }
-		  const croppedImage = await getCroppedImg(cropperRef.current.imageRef.current, croppedAreaPixelsRef.current, rotation, brightness, contrast);
+		  }		
+		  const croppedImage = await getCroppedImg();
 		  // Suponiendo que getCroppedImg devuelve una URL de la imagen
+		  console.log("croppedImage",croppedImage);
 		  setPreviewImage(croppedImage);
 	  };
 
 		// Manejador para cuando el usuario suelta el control deslizante
 	const handleSliderChangeComplete = () => {
-		isSliderChangeRef.current = false;
 		updatePreviewImage();
 	};
 
@@ -159,6 +193,7 @@ export default function Main() {
 	}
 
 	const PreviewImg = () => {
+		console.log("previewImag",previewImage);
 		const imageSrc = previewImage || "images/default.jpeg";
 		const isDefaultImage = (imageSrc === "images/default.jpeg");
 	
@@ -251,13 +286,14 @@ export default function Main() {
                             <Cropper
 							ref={cropperRef}
                             image={uploadedImage}
-							rotation={rotation}							
+							rotation={rotation}
+							onRotationChange={setRotation}
 							onCropChange={setCrop}
       						onCropComplete={onCropComplete}                             crop={crop}
                             zoom={zoom}
 							zoomSpeed={0.1}
                             aspect={width / height}
-                            onZoomChange={(newZoom) => setZoom(newZoom)}
+                            onZoomChange={setZoom}
 							style={{ containerStyle: { width: '100%', height: '100%' }, mediaStyle: imageStyle }}
                             />
                         )}
@@ -276,9 +312,9 @@ export default function Main() {
 							width={width}
 							height={height}
 							blockSize={blockSize}
-							croppedImg = {previewImage}
+							//croppedImg = {croppedImg}
 							onExport={handleExportScene}
-							//croppedImg = {uploadedImage}
+							croppedImg = {uploadedImage}
 							setPixelInfo = {setPixelInfo}
 							/>
 						)}
@@ -359,10 +395,7 @@ export default function Main() {
 											min="-45"
 											max="45"
 											value={rotation}
-											onChange={(e) => {
-												isSliderChangeRef.current = true;
-												setRotation(parseInt(e.target.value));
-											}}
+											onChange={(e) => setRotation(e.target.value)}
 											onMouseUp={handleSliderChangeComplete}
 
 											/>
@@ -375,7 +408,7 @@ export default function Main() {
 										min="0"
 										max="200"
 										value={contrast}
-										onChange={e => setContrast(parseInt(e.target.value))}
+										onChange={e => setContrast(e.target.value)}
 										onMouseUp={handleSliderChangeComplete}
 
 										/>
@@ -389,7 +422,7 @@ export default function Main() {
 										min="0"
 										max="200"
 										value={brightness}
-										onChange={e => setBrightness(parseInt(e.target.value))}
+										onChange={e => setBrightness(e.target.value)}
 										onMouseUp={handleSliderChangeComplete}
 
 										/>

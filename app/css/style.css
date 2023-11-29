@@ -2,6 +2,32 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700;8..144,800;8..144,900;8..144,1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+/* Estilos para el modo claro */
+:root {
+    --color-fondo-claro: #fff;
+    --color-fondo-oscuro: #fff;
+    --color-text: #344053;
+    --color-text-hight-enfasis:  #344053;
+    --color-text-medium-enfasis:  #344053;
+    --color-text-disable:  #344053;
+    --color-text-buttons: #646464;
+    --bordes-areas: #E5E5E5;
+    /* Añade más variables según necesites */
+  }
+  
+  /* Estilos para el modo oscuro */
+  [data-theme='dark'] {
+    --color-fondo-claro: #1F1F1F;
+    --color-fondo-oscuro: #121212;
+    --color-text: #fff;
+    --color-text-hight-enfasis: rgb(255,255,255,0.87);
+    --color-text-medium-enfasis: rgb(255,255,255,0.60);
+    --color-text-disable: rgb(255,255,255,0.30);
+    --color-text-buttons: #fff;
+    --bordes-areas: #121212;
+    /* Añade más variables según necesites */
+  }
+
 /*=== Basic css ===*/
 html,
 body,
@@ -45,80 +71,38 @@ ul {
 html {
     font-size: 1.76vh;
 }
+
+.lil-gui {
+    display: none !important;
+}
+img.switch-icon{
+    /*width: 20px;
+    height: 20px;*/
+}
+
+@keyframes shake {
+    0%, 12.5% { transform: translateY(0); }
+    6.25% { transform: translateY(-2px); }
+    18.75% { transform: translateY(2px); }
+    25%, 100% { transform: translateY(0); }
+  }
   
+  .chake-icon {
+    display: inline-block;
+    animation: shake 1.0s infinite;
+  }
+
 .step.inactive {
     display: block;
     pointer-events: none; /* Deshabilita eventos de clic */
     opacity: 0.4; /* Efecto de velo gris */
 }
 
-/* The switch - the box around the slider */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 33px;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-
-  span.slider{
-    height: 3.15vh;
-    width: 5.6vh;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 2.84vh;
-    width: 2.84vh;
-    left: 0.19vh;
-    bottom: 0.19vh;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #344054;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #344054;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 3.15vh;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
+button.inactive {
+    display: block;
+    pointer-events: none; /* Deshabilita eventos de clic */
+    opacity: 0.4; /* Efecto de velo gris */
+}
 
 img.btn-icons {
     width: 2.6vh;
@@ -129,37 +113,6 @@ img.btn-icons {
     height: 5.04vh;
     max-height: 46px;
 }
-
-.filter-slider ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex; /* Esto alinea los elementos de la lista horizontalmente */
-    overflow-x: auto; /* Permite desplazamiento horizontal si hay muchos elementos */
-    white-space: nowrap; /* Asegura que los elementos no se envuelvan */
-  }
-  
-  .filter-slider li {
-    display: inline-block; /* Elementos de lista en línea */
-    margin-right: 10px; /* Espacio entre elementos de la lista */
-    cursor: pointer; /* Cursor en forma de mano para indicar que son clickeables */
-  }
-  
-  .filter-slider img {
-    display: block; /* Evita márgenes debajo de las imágenes */
-    width: auto; /* Mantén la anchura original de la imagen o define una específica */
-    height: 30px; /* Altura fija para todas las imágenes */
-    border: 2px solid transparent; /* Borde transparente que se puede cambiar para indicar selección */
-  }
-  
-  .filter-slider li:hover img {
-    border-color: blue; /* Indica visualmente el filtro sobre el que se pasa el ratón */
-  }
-  
-  .filter-slider li.selected img {
-    border-color: red; /* Indica el filtro seleccionado */
-  }
-  
 
 button:focus,
 a:focus,
@@ -190,9 +143,10 @@ body {
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
     font-weight: 400;    
-	background: #fff;
-	color: #333333;	
+	background: var(--color-fondo-oscuro);
+	color: var(--color-text);	
 }
+
 .container {
     padding-left: 15px;
     padding-right: 15px;
@@ -202,8 +156,8 @@ body {
 
 .header-area {
     padding: 0.878vh;
-    border-bottom: 1px solid #E5E5E5;
-    background: #FFF;
+    border-bottom: 1px solid var(--bordes-areas);
+    background: var(--color-fondo-claro);
 }
 
 .header-item {
@@ -211,7 +165,11 @@ body {
     align-items: center;
     justify-content: space-between;
     max-width: 1865px;
-    padding: 0 28px;
+    padding: 0 3.29vh;
+}
+
+.header-item-inner2 {
+    position: relative;
 }
 
 .header-item-inner2 ul {
@@ -264,7 +222,7 @@ body {
     width: 100%;
     border-radius: 8.66px;
     border: 1px dashed #9E9E9E;
-    background: rgba(250, 250, 250, 0.70);
+    background: var(--color-fondo-oscuro);
     position: relative;
     display: flex;
     align-items: center;
@@ -290,15 +248,15 @@ body {
 }
 
 .step-item-inner2 p {
-    color: #344054;
+    color: var(--color-text-hight-enfasis);
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 700;
 }
 
 .step-item2 {
     width: 47vh;
-    border-left: 1px solid #E4E7EC;
-    background: #F9FAFB;
+    border-left: 1px solid var(--bordes-areas);
+    background: var(--color-fondo-claro);
     padding: 3.29vh 3.29vh 3.29vh;
     min-height: 93.08vh;
     display: flex;
@@ -308,7 +266,7 @@ body {
 }
 
 .step-item2 h2 {
-    color: #344053;
+    color: var(--color-text-hight-enfasis);
     font-size: 1rem;
     font-weight: 700;
     margin-bottom: 2.2vh;
@@ -332,6 +290,7 @@ body {
     justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente */
     overflow: hidden; /* En caso de que la imagen sea más grande que el contenedor */
+    border-radius: 0.6vh;
 }
 
 .step-item2-inner11 input {
@@ -345,7 +304,8 @@ body {
 }
 
 .step-item2-inner .step-item2-inner11 img.default {
-    max-width: 100%; /* La imagen no excederá el ancho del contenedor */
+    height: 100%; /* La imagen no excederá el ancho del contenedor */
+    object-fit: cover;
     display: block; /* Elimina cualquier espacio extra debajo de la imagen */
 }
 
@@ -356,17 +316,24 @@ body {
 }
 
 .step-item2-inner11 img.upload-icon {
+    width: 2.6vh;
+    height: 2.6vh;
+}
+
+.btn-preview-upload {
     position: absolute;
     top: 6px;
     right: 6px;
     width: 3.84vh;
     height: 3.84vh;
+    background-color: white;
+    border-radius: 0.6vh;
 }
 
 .step-item2-inner10 {
     padding-top: 2.2vh;
     padding-bottom: 2.2vh;
-    border-bottom: 1px solid #E4E7EC;
+    /*border-bottom: 1px solid #E4E7EC;*/
     width: 100%;
 }
 
@@ -656,44 +623,4 @@ ul li button.active {
 
 .step-item2 a:hover {
     opacity: .8;
-}
-
-/*  dark mode start  */
-
-.dark-mode {
-    background: #344054;
-}
-
-.dark-mode .header-area {
-    background: #344054;
-    border-color: #fff;
-}
-
-.dark-mode .header-item-inner2 ul {
-    background: #fff;
-}
-
-.dark-mode .header-item-inner2 ul li {
-    color: #344054;
-}
-
-.dark-mode .header-item-inner2 ul li.active {
-    background: #344054;
-    color: #fff;
-}
-
-.dark-mode .step-area {
-    background: #344054;
-}
-
-.dark-mode .step-area {
-    background: #344054;
-}
-
-.dark-mode .step-item-inner {
-    background: #fff;
-}
-
-.dark-mode .step-item2 {
-    background: #fff;
 }
