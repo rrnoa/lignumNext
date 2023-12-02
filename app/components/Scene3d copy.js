@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import pixelateImg from '@/app/libs/pixelate';
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
@@ -9,7 +9,6 @@ import RectLightControl from '../libs/3d/controls/RectLightControl';
 import AmbientLightControl from '../libs/3d/controls/AmbientLightControl';
 import MaterialControl from '../libs/3d/controls/MaterialControl';
 import RendererControl from '../libs/3d/controls/RendererControl';
-import { Blocks } from  'react-loader-spinner'
 
 
 const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport, theme='light'}) => {
@@ -20,31 +19,6 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 	const floorMaterialRef = useRef(null);
 	const wallMaterialRef = useRef(null);
 	const dennisMaterialRef = useRef(null);
-	const exportGroupRef = useRef(null);
-
-	const [isLoading, setIsLoading] = useState(true);
-
-	const manager = new THREE.LoadingManager();
-	manager.onStart = function (url, itemsLoaded, itemsTotal) {
-		console.log('Comenzó la carga:', url, itemsLoaded, 'de', itemsTotal);
-	};
-
-	manager.onLoad = function () {
-		/*setTimeout(() => {
-			setIsLoading(false); // Establece la carga como falsa cuando todo esté cargado
-		  }, 10000); // Delay de 3 segundos*/
-		setIsLoading(false); // Establece la carga como falsa cuando todo esté cargado
-
-  		console.log('Todos los elementos han sido cargados.');
-	};
-
-	manager.onProgress = function (url, itemsLoaded, itemsTotal) {
-		console.log('Cargando archivo: ' + url + '.\nCargados ' + itemsLoaded + ' de ' + itemsTotal + ' archivos.');
-	};
-
-	manager.onError = function (url) {
-		console.log('Hubo un error al cargar ' + url);
-	};
 
 	useEffect(() => {
 		if(sceneRef.current){
@@ -67,7 +41,6 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 	
     useEffect(() => {
 		console.log("useEffect Scene3d");
-		if(!isLoading) setIsLoading(true);
         const xBlocks = Math.floor(width / blockSize);
 		const yBlocks = Math.floor(height / blockSize);
 		const scene = new THREE.Scene();
@@ -95,8 +68,6 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 					camera.updateProjectionMatrix();
 				
 					const renderer = new THREE.WebGLRenderer({ antialias: true });
-					console.log("-------------------",renderer.capabilities.maxTextureSize);
-
 					renderRef.current = renderer; 
 				
 					renderer.setSize(paintAreaWidth, paintAreaHeight);
@@ -107,7 +78,6 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 					renderer.toneMappingExposure = 1;
 				
 					renderer.toneMapping = THREE.LinearToneMapping;
-					//renderer.toneMapping = THREE.ACESFilmicToneMapping;
 					canvasRef.current?.appendChild(renderer.domElement);
 
 
@@ -129,7 +99,7 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 					scene.add(ambientlight);
 					scene.add(rectLight);
 					scene.add(directionalLight);
-					const material = new THREE.MeshStandardMaterial();
+					const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
 
 					const floorWidth = 1000;
 					const floorDepth = 600;
@@ -157,17 +127,19 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 					//scene.add( wallMesh );
 
 					//cargar la geometría
-					const loader = new OBJLoader(manager);
-					loader.load("CUBO.obj", function (object) {						
+					const loader = new OBJLoader();
+					loader.load("CUBO.obj", function (object) {
 						const blockGeometry = object.children[0].geometry;
 						paintFrame(scene, blockGeometry, allColors, material);
 						loader.load("dennis.obj", function (dennis) {
 							console.log("modelo cargado");
+							console.log(object);
 							
 							const box = new THREE.Box3().setFromObject(dennis);
 							const currentHeight = box.max.y - box.min.y; // Altura actual del objeto
 							const desiredHeight = 68;
 							const scaleRatio = desiredHeight / currentHeight; // La relación de escala necesaria para alcanzar la altura deseada
+							console.log(currentHeight, scaleRatio);
 						  // Escalar el objeto para alcanzar la altura deseada
 							dennis.scale.set(scaleRatio, scaleRatio, scaleRatio);
 							dennis.children[0].castShadow = true;
@@ -181,8 +153,10 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 							//scene.add(dennis);
 
 						  },// called when loading is in progresses
-						  function ( xhr ) {						  
-							//console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );						  
+						  function ( xhr ) {
+						  
+							console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+						  
 						  },
 						  // called when loading has errors
 						  function ( error ) {
@@ -215,7 +189,7 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 					})
 					.then((data) => {
 						console.log("json",data);
-						gui.load(data);						
+						gui.load(data);
 						repositionLights(rectLight, directionalLight, scene);
 					})
 					.catch((error) => console.error("Error fetching the json:", error));
@@ -254,8 +228,8 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
     }, [blockSize]); // Dependencias del efecto	
 
 	const handleSomeAction = () => {
-        if (onExport && exportGroupRef.current) {
-            onExport(exportGroupRef.current);
+        if (onExport && sceneRef.current) {
+            onExport(sceneRef.current);
         }
     };
 
@@ -285,12 +259,10 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 		if (obj.parent) {
 		  obj.parent.remove(obj);
 		}
-	}
+	  }
 	
 
 	const paintFrame = (scene, blockGeometry, allColors, material) => {
-
-		exportGroupRef.current = new THREE.Group();
 			
 		blockGeometry.scale(blockSize, blockSize, blockSize);
 	
@@ -325,8 +297,8 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 		const diffuseTextures = [];
 		const roughnessTextures = [];
 		const normalTextures = [];
-		const textureLoader = new THREE.TextureLoader(manager);
-		 //cargar texturas diffuse
+		const textureLoader = new THREE.TextureLoader();
+		/* //cargar texturas diffuse
 		for (const texturePath of diffuseMaps) {
 		  const texture = textureLoader.load(texturePath);
 		  diffuseTextures.push(texture);
@@ -340,35 +312,35 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 		for (const texturePath of normalMaps) {
 		  const texture = textureLoader.load(texturePath);
 		  normalTextures.push(texture);
-		} 
+		} */
 	
 		// Preparar los 4 materiales
 		const material1 = material.clone();
-		material1.map = diffuseTextures[0];
-		material1.roughnessMap = roughnessTextures[0];
-		material1.normalMap = normalTextures[0];
-		material1.vertexColors = true;
+		//material1.map = diffuseTextures[0];
+		//material1.roughnessMap = roughnessTextures[0];
+		//material1.normalMap = normalTextures[0];
+		//material1.vertexColors = true;
 		material1.needsUpdate = true;
 	
 		const material2 = material.clone();
-		material2.map = diffuseTextures[1];
+		/* material2.map = diffuseTextures[1];
 		material2.roughnessMap = roughnessTextures[1];
 		material2.normalMap = normalTextures[1];
-		material2.vertexColors = true;
+		material2.vertexColors = true; */
 		material2.needsUpdate = true;
 	
 		const material3 = material.clone();
-		material3.map = diffuseTextures[2];
+		/* material3.map = diffuseTextures[2];
 		material3.roughnessMap = roughnessTextures[2];
 		material3.normalMap = normalTextures[2];
-		material3.vertexColors = true;
+		material3.vertexColors = true; */
 		material3.needsUpdate = true;
 	
 		const material4 = material.clone();
-		material4.map = diffuseTextures[3];
+		/* material4.map = diffuseTextures[3];
 		material4.roughnessMap = roughnessTextures[3];
 		material4.normalMap = normalTextures[3];
-		material4.vertexColors = true;
+		material4.vertexColors = true; */
 		material4.needsUpdate = true;
 	
 		let materials = [material1, material2, material3, material4];
@@ -392,7 +364,7 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 		  };
 		});
 	
-		blockInfos.forEach((block, index) => {
+		/* blockInfos.forEach((block, index) => {
 		  const availableRotations = getAvailableRotations(
 			index,
 			blockInfos,
@@ -407,7 +379,7 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 		  const rotationMatrix = new THREE.Matrix4().makeRotationZ(randomRotation);
 		  block.matrix.multiply(rotationMatrix);
 		  block.rotation = randomRotation;
-		});  
+		}); */
 	
 		//por cada material los bloques que le corresponden
 		let organizedByMaterial = materials.map(() => []);
@@ -417,59 +389,33 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 		//console.log(organizedByMaterial );
 		blockGeometry.rotateX(Math.PI / 2);
 	
-		//---------------------aqui se contruyen las instancedMesh---------------
-		organizedByMaterial.forEach((blocksForMaterial, index) => {	
-		
+		organizedByMaterial.forEach((blocksForMaterial, index) => {
 		  const material = materials[index];
-		  const instancedMesh = new THREE.InstancedMesh(//crea un instancedMesh
+		  const instancedMesh = new THREE.InstancedMesh(
 			blockGeometry.clone(),
 			material,
 			blocksForMaterial.length
 		  );
 		  instancedMesh.castShadow = true;
 		  instancedMesh.receiveShadow = true;
-		  const allColorsBuffer = new THREE.InstancedBufferAttribute(
+		  //const colorsArray = new Float32Array(blocksForMaterial.length * 3);
+		  const allColors = new THREE.InstancedBufferAttribute(
 			new Float32Array(blocksForMaterial.length * 3),
 			3
 		  );
-
-		  //almacenar los colores de esa instancia para pasarlos al convertidor
-		  let instaceColors = [];
 	
 		  blocksForMaterial.forEach((blockInfo, instanceIndex) => {
 			instancedMesh.setMatrixAt(instanceIndex, blockInfo.matrix);
-			let color = new THREE.Color(rgbC(blockInfo.color));//se puede optimizar
-			instaceColors.push(color);
-			allColorsBuffer.setXYZ(instanceIndex, color.r, color.g, color.b);
+			let color = new THREE.Color(rgbC(blockInfo.color));
+			allColors.setXYZ(instanceIndex, color.r, color.g, color.b);
 		  });
-
-		  instancedMesh.geometry.setAttribute("color", allColorsBuffer);
-
-		  instancedMesh.instanceMatrix.needsUpdate = true;
-		  
-		  scene.add(instancedMesh);		  
-
-		  convertInstancedMeshToGroup(instancedMesh, instaceColors);
-		  
-		});// fin del siclo donde se crean las instancedMesh	  
-	};//fin de PaintFrame
-
-	  const convertInstancedMeshToGroup = (instancedMesh, instaceColors)=> {			
 	
-		for (let i = 0; i < instancedMesh.count; i++) {
-			const matrix = new THREE.Matrix4();
-			instancedMesh.getMatrixAt(i, matrix);
-
-			const mesh = new THREE.Mesh(instancedMesh.geometry, instancedMesh.material.clone());
-			
-			// Suponiendo que tienes un array de colores para cada instancia
-			mesh.material.color.set(instaceColors[i]); // 'colors' es un array de colores correspondiente a cada instancia
-
-			mesh.applyMatrix4(matrix);
-			exportGroupRef.current.add(mesh);
-		}
-	  }
-	  
+		  instancedMesh.geometry.setAttribute("color", allColors);
+		  instancedMesh.instanceMatrix.needsUpdate = true;
+	
+		  scene.add(instancedMesh);
+		});
+	  };
 	
 	  const getAvailableRotations = (index, blockInfos, currentXBlocks) => {
 		let rotations = [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2]; // 0, 90, 180, 270 grados
@@ -509,9 +455,6 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 		rectLight.width = width;
 		rectLight.position.y = (height) / 2 + offsetRect;
 
-		directionalLight.shadow.mapSize.width = 16384;
-		directionalLight.shadow.mapSize.height = 16384;
-
 		const offSet = 20;//para incluir al mu;eco  en las zombras
 		directionalLight.position.y = directionalLight.position.y + 30;
 		directionalLight.position.z = directionalLight.position.z + 30;
@@ -521,14 +464,14 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 
 		directionalLight.shadow.camera.top = height / 2 + overHeight;
 		directionalLight.shadow.camera.left = - (width) / 2 - 60;
-		directionalLight.shadow.camera.right = (width ) / 2 + 6;
+		directionalLight.shadow.camera.right = (width ) / 2;
 		directionalLight.shadow.camera.bottom = - (height) / 2;
 		let shadowHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-		const helper = new THREE.DirectionalLightHelper( directionalLight, 5 );
-		scene.add( helper );
+		//const helper = new THREE.DirectionalLightHelper( directionalLight, 5 );
+		//scene.add( helper );
 		directionalLight.shadow.camera.updateProjectionMatrix();
 
-		scene.add(shadowHelper);
+		//scene.add(shadowHelper);
 	  };
 	
 	  //Create color string
@@ -537,18 +480,9 @@ const Escena3D = ({ width, height, blockSize, croppedImg, setPixelInfo, onExport
 	  };
 	
     return (
-		 <>
- 			<div className="spinner" style={{ backgroundColor: theme === 'light'?'#ffffff':'#121212', display: isLoading ? "flex" : "none" }}>
-			 <Blocks
-				visible={true}
-				height="80"
-				width="80"
-				ariaLabel="blocks-loading"
-				wrapperStyle={{}}
-				wrapperClass="blocks-wrapper"
-				/>
-			</div>
-    		<div ref={canvasRef} style={{ width: '100%', height: '100%'}} />
+		<>	
+        <div ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+		<button onClick={handleSomeAction}>Export</button>
 		</>
     );
 };

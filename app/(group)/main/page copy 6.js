@@ -109,18 +109,10 @@ export default function Main() {
         const file = e.target.files[0];
         if (file) {
 		  const img = URL.createObjectURL(file);
+		  console.log(img)
           setUploadedImage(img);
 		  setCurrentState("crop");
 		  setCurrentStep(2);
-			//reset para cuando se carga desde el preview
-		  setActiveButton("brightness"); 
-		  setRotation(0);
-		  setContrast(100);
-		  setBrightness(100);		
-		  setWidth(24);
-		  setHeight(24);
-		  setCrop({ x: 0, y: 0});
-		  setZoom(1);
         }
     };
 
@@ -178,6 +170,11 @@ export default function Main() {
 				/>
 		);
 	}
+
+	const handleDarkMode = ()=> {
+		setDarkMode(darkMode => !darkMode);
+	}
+
 	const handleExportScene = (scene) => {
 		const exporter = new GLTFExporter();
         exporter.parse(scene, (gltf) => {
@@ -203,18 +200,15 @@ export default function Main() {
 		<header className="header-area">
 			<div className="header-item">
 				<div className="header-item-inner">
-					<a href="#"><img src={theme == 'dark'? "images/logo-black.png" :"images/logo-white.png"} alt=""/></a>					
+					<a href="#"><img src="images/logo.svg" alt=""/></a>					
 				</div>
-				<Tippy content={theme == 'dark'?"Change to light":"Change to dark"}>
 				<div className="header-item-inner2">
-				<label>
-					
+				<label>					
 					<Switch 
 					onChange={toggleTheme} 
 					checked={theme == 'dark'?true:false}					
 					onColor={'#121212'}
 					uncheckedIcon = {
-						
 						<div
 							style={{
 							display: "flex",
@@ -227,7 +221,6 @@ export default function Main() {
 						>
 						<img src="images/sun-2-svgrepo.svg" alt=""/>
 						</div>
-						
 					}
 					checkedIcon = {
 						<div
@@ -242,12 +235,11 @@ export default function Main() {
 						>
 							<img  src="images/moon-svgrepo.svg" alt=""/>
 						</div>					
-					}
+				}
 
 					/>
 				</label>
-				</div>
-				</Tippy>									
+				</div>										
 			</div>	
 		</header>	
 
@@ -270,8 +262,8 @@ export default function Main() {
                             />
                         )}
                         {currentState=="upload" && (
-                            <>							
-								<input type="file" onChange={handleImageChange} accept="image/*" title=""/>								
+                            <>
+                                <input type="file" onChange={handleImageChange} accept="image/*" />
                                 <div className="step-item-inner2" >
                                     <img src="images/upload-svgrepo.svg" alt=""/>
                                     <p style={{fontWeight: '700'}}>Step 1: Upload your media or drop it here</p>
@@ -295,36 +287,29 @@ export default function Main() {
 				</div>
 				<div className="step-item2">
 					<div className={`step-item2-inner step-item2-inner10 ${currentStep === 1 ? "step inactive" : ""}`} style={{paddingBottom: '0px'}}>
-						<Tippy content='Click or drop a new image'>
 						<div className="step-item2-inner11" style={{backgroundColor: "grey"}}>
 							<PreviewImg/>
 							<button className='action_buttons btn-preview-upload'>
 								<img className="upload-icon" src="images/gallery-send-svgrepo.svg" alt="Upload" style={{cursor: 'pointer'}}></img>
 							</button>
 							
-							<input type="file" onChange={handleImageChange} accept="image/*" title=''/>							
+							<input type="file" onChange={handleImageChange} accept="image/*"/>							
 						</div>
-						</Tippy>
-						
 					</div>
 					<div className={`step-item2-inner2 step-item2-inner10 ${currentStep === 1 || currentStep !== 2 ? "step inactive" : ""}`}>
 						<h2>Step 2: Input panel size</h2>
 						
-						<div className="form">							
+						<div className="form">
 							<div className="inputs">
-							<Tippy content='Input panel width'>
 								<input id='input_w' className="input_w" type="number" min="24" max="300" value={width} 
 								onChange={handleWidth}
 								onFocus={(even)=>{even.target.select()}}
 								/>
-							</Tippy>				
-								<label htmlFor="input_w">W</label>
-							<Tippy content='Input panel height'>
+								<label htmlFor="input_w">W</label>					
 								<input id='input_h' className="input_h" type="number" min="24" max="300" value={height} 
 								onChange={handleHeight}
 								onFocus={(even)=>{even.target.select()}}
-								/>
-							</Tippy>
+								/>	
 								<label htmlFor="input_h">H</label>											
 							</div>
 							<Tippy content="Confirm">
@@ -338,27 +323,24 @@ export default function Main() {
 					<div className={`step-item2-inner3 step-item2-inner10 ${currentStep === 1 || currentStep !== 3 ? "step inactive" : ""}`}>
 						<h2>Step 3: Edit your image</h2>
 						<div className='wrapper_edit_buttons'>
-							<div className='buttons-list'>							
+							<div className='buttons-list'>								
 								<IconButton 
 									isActive={activeButton == "rotate"?true:false} 
 									onClick={() => editBtnHandler("rotate")} 
 									icon="images/tilt.svg" 
-									activeIcon="images/tilt-active.svg"
-									name = 'Rotate'
+									activeIcon="images/tilt-active.svg" 
 								/>
 								<IconButton 
 										isActive={activeButton == "contrast"?true:false} 
 										onClick={() => editBtnHandler("contrast")} 
 										icon="images/contrast.svg" 
 										activeIcon="images/contrast-active.svg" 
-										name = 'Contrast'
 								/>
 								<IconButton 
 										isActive={activeButton == "brightness"?true:false}
 										onClick={() => editBtnHandler("brightness")} 
 										icon="images/brightness.svg" 
 										activeIcon="images/brightness-active.svg" 
-										name = 'Brightness'
 									/>			
 							</div>
 							<Tippy content="Back one step">
@@ -416,11 +398,9 @@ export default function Main() {
 									
 							</div>
 						</div>
-						<Tippy content='Show your 3D panel'>						
 						<div style={{display: 'flex', justifyContent: 'right'}}>
 							<a href="#" onClick={handleView}>3D Panel Preview</a>
 						</div>
-						</Tippy>
 					</div>
 					<div className={`step-item2-inner5 step-item2-inner10 ${currentStep === 1 || currentStep !== 4 ? "step inactive" : ""}`}>
 						<h2>Step 4: Select block size</h2>
@@ -429,15 +409,11 @@ export default function Main() {
 								<Tippy content="1” blocks">
 									<button className={blockSize == 1?"active":""} onClick={() => handlerBlockSize(1)}>1”</button>
 								</Tippy>
-								<Tippy content={(width % 2 !== 0) || (height%2 !==0) ?"Width and height must be 2x multiples ":"2” blocks"}>
-									<div>
-										<button className={`${blockSize == 2?"active":""} ${(width % 2 !== 0) || (height%2 !==0) ?"inactive":""}`} onClick={() => handlerBlockSize(2)}>2”</button>
-									</div>
+								<Tippy content="2” blocks">
+									<button className={`${blockSize == 2?"active":""} ${(width % 2 !== 0) || (height%2 !==0) ?"inactive":""}`} onClick={() => handlerBlockSize(2)}>2”</button>
 								</Tippy>
-								<Tippy content={(width % 3 !== 0) || (height%3 !==0) ?"Width and height must be 3x multiples ":"3” blocks"}>
-									<div>
-										<button className={`${blockSize == 3?"active":""} ${(width % 3 !== 0) || (height%3 !==0) ?"inactive":""}`} onClick={() => handlerBlockSize(3)}>3”</button>
-									</div>
+								<Tippy content={(width % 3 !== 0) || (height%3 !==0) ?"inactive":"3” blocks"}>
+									<button className={`${blockSize == 3?"active":""} ${(width % 3 !== 0) || (height%3 !==0) ?"inactive":""}`} onClick={() => handlerBlockSize(3)}>3”</button>
 								</Tippy>
 							</div>
 							<Tippy content="Back one step">
@@ -455,9 +431,7 @@ export default function Main() {
 						xBlocks = {Math.floor(width / blockSize)}
 						yBlocks = {Math.floor(height / blockSize)}
 						/>
-						<Tippy content='Get your 3D file'>
-							<a id="woodxel_panel_3d" href="#" >3D Model</a>
-						</Tippy>
+						<a id="woodxel_panel_3d" href="#" >3D Model <strong style={{fontSize: '1.2rem'}}>&nbsp;$25</strong></a>
 					</div>
 				</div>
 			</div>

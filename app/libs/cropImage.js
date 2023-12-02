@@ -38,11 +38,12 @@ export default async function getCroppedImg(
   contrast = 100,
   flip = { horizontal: false, vertical: false }
 ) {
-
-  console.log("pixelCrop",pixelCrop);
-  
+  console.log("imageElement",imageElement);
+  const image = await createImage(imageElement);  
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
+
+  console.log(pixelCrop);
 
   if (!ctx) {
     return null
@@ -52,8 +53,8 @@ export default async function getCroppedImg(
 
   // calculate bounding box of the rotated image
   const { width: bBoxWidth, height: bBoxHeight } = rotateSize(
-    imageElement.width,
-    imageElement.height,
+    image.width,
+    image.height,
     rotation
   )
 
@@ -66,10 +67,10 @@ export default async function getCroppedImg(
   ctx.translate(bBoxWidth / 2, bBoxHeight / 2)
   ctx.rotate(rotRad)
   ctx.scale(flip.horizontal ? -1 : 1, flip.vertical ? -1 : 1)
-  ctx.translate(-imageElement.width / 2, -imageElement.height / 2)
+  ctx.translate(-image.width / 2, -image.height / 2)
 
   // draw rotated image
-  ctx.drawImage(imageElement, 0, 0)
+  ctx.drawImage(image, 0, 0)
 
   const croppedCanvas = document.createElement('canvas')
 
@@ -78,6 +79,8 @@ export default async function getCroppedImg(
   if (!croppedCtx) {
     return null
   }
+
+  console.log(pixelCrop);
 
   // Set the size of the cropped canvas
   croppedCanvas.width = pixelCrop.width

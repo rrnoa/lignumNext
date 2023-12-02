@@ -3,6 +3,7 @@ import React from 'react'
 import { jsPDF } from "jspdf";
 import svgNumbers from "@/app/libs/svg";
 import "@/app/libs/svg2pdf.umd.min.js";
+import Tippy from '@tippyjs/react';
 
 const BuyPanel = ({pixelatedImage, colorsArray, blockSize, xBlocks, yBlocks}) => {
 
@@ -435,7 +436,9 @@ const BuyPanel = ({pixelatedImage, colorsArray, blockSize, xBlocks, yBlocks}) =>
   };
 
   return (
-    <a id="buy_panel" href="#" onClick={handleBuy}>WOODXEL Panel <strong style={{fontSize: '1.2rem'}}>&nbsp;$27823</strong></a>
+    <Tippy content='Buy your panel now'>
+      <a id="buy_panel" href="#" onClick={handleBuy}>WOODXEL Panel</a>
+    </Tippy>
   )
 }
 
